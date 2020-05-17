@@ -1,4 +1,5 @@
 import React from 'react';
+import { GraphRenderer } from './renderers';
 import './App.css';
 import parsePseudocode from './pseudocode/parse';
 import algorithms from './algorithms';
@@ -7,12 +8,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <head>
+        {/* <head>
           This is a short example to show correct parsing of the pseudocode
-        </head>
+        </head> */}
         <br />
         { JSON.stringify(parsePseudocode(algorithms.binaryTreeSearch.pseudocode)) }
       </header>
+      <GraphRenderer />
     </div>
   );
 }
