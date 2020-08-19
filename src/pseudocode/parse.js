@@ -98,6 +98,8 @@ function addBookmark(json, name, indentation) {
     // eslint-disable-next-line no-param-reassign
     line['indentation'] += indentation;
     if (line['ref'].length > 0) {
+      // eslint-disable-next-line no-param-reassign
+      line['bookmark'] = c;
       addBookmark(json, line['ref'], line['indentation']);
     } else {
       // eslint-disable-next-line no-param-reassign
