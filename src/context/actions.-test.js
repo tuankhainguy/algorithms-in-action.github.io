@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
-import { GlobalActions } from './actions';
+// import { GlobalActions } from './actions';
 
+/*
 describe('LOAD_ALGORITHM action', () => {
   it('loads an algorithm', () => {
     const loadedState = GlobalActions.LOAD_ALGORITHM(undefined, { name: 'binaryTreeSearch' });
@@ -13,6 +14,7 @@ describe('LOAD_ALGORITHM action', () => {
     });
   });
 });
+*/
 
 // describe('NEXT_LINE action', () => {
 //   it('moves to next line', () => {
