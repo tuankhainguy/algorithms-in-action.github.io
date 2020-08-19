@@ -15,7 +15,7 @@ import {
  { pseudocode: String, explanation: String, run: Function }
  */
 
-import binaryTreeSearch from './binaryTreeSearch';
+import binaryTreeSearch from './BST_Search';
 
 export default {
   'binaryTreeSearch': binaryTreeSearch,

@@ -23,12 +23,12 @@ function extractCode(lines) {
   let json = {};
   let explanation = '';
   let explFlag = false;
-  let inFlag = false;
+  let ind = 0;
   for (const line of lines) {
     if (line.localeCompare('\\In{') === 0) {
-      inFlag = true;
+      ind += 1;
     } else if (line.localeCompare('\\In}') === 0) {
-      inFlag = false;
+      ind -= 1;
     } else if (line.indexOf('\\Expl{ ') >= 0) {
       explFlag = true;
       explanation = '';
@@ -55,7 +55,7 @@ function extractCode(lines) {
         json['ref'] = '';
       }
       json['explanation'] = '';
-      json['indentation'] = inFlag ? 1 : 0;
+      json['indentation'] = ind;
     }
   }
   if (Object.keys(json).length !== 0) {
@@ -112,5 +112,6 @@ export default function parse(input) {
   const rawCode = removeLineContinuation(input);
   const json = extractCodeBlock(rawCode);
   addBookmark(json, 'Main', 0);
+  console.log(json);
   return json;
 }
