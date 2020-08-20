@@ -87,7 +87,7 @@ export default {
     \\Code}
 `),
   explanation: BSTExp,
-  elements: [],  // elements to be inserted, e.g. [5,8,10,3,1,6,9,7,2,0,4]
+  elements: [1, 2],  // elements to be inserted, e.g. [5,8,10,3,1,6,9,7,2,0,4]
   graph: new GraphTracer('key1', null, 'BST - Insertion'),
   tree: {},
   reset() {
@@ -103,7 +103,7 @@ export default {
    */
   init() {
     // set data dynamically
-    this.elements = [];
+    this.elements = [1, 2];
     return { 
       graph: this.graph, 
       tree: this.tree 
