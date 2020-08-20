@@ -112,6 +112,5 @@ export default function parse(input) {
   const rawCode = removeLineContinuation(input);
   const json = extractCodeBlock(rawCode);
   addBookmark(json, 'Main', 0);
-  console.log(json);
   return json;
 }

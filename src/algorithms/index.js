@@ -16,9 +16,11 @@ import {
  */
 
 import binaryTreeSearch from './BST_Search';
+import binaryTreeInsert from './BST_Insert';
 
 export default {
   'binaryTreeSearch': binaryTreeSearch,
+  'binaryTreeInsert': binaryTreeInsert,
   // The entries below are not fully-written yet, they are for testing only
   'quicksort': {
     name: 'Quick Sort',

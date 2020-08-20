@@ -58,9 +58,13 @@ function LeftPanel() {
     className: 'algorithm-list-main',
     openStatus: openGraph,
     subAlgorithm: [{
-      name: 'Binary Search Tree',
+      name: 'Binary Tree Search',
       className: 'algorithm-list-sub',
       onClickEvent: 'binaryTreeSearch',
+    }, {
+      name: 'Binary Tree Insert',
+      className: 'algorithm-list-sub',
+      onClickEvent: 'binaryTreeInsert',
     }, {
       name: 'Transitive closure',
       className: 'algorithm-list-sub',
