@@ -117,22 +117,22 @@ export default {
                             let root;
 
     yield { step: 3 };      for (let i = 0; i < this.elements.length; i++) {
+    yield { step: 4 };
                               if (i === 0) {
                                 root = this.elements[i];
                                 if (root) {
                                   this.tree[root] = { root: true };
                                 }
                                 this.graph.addNode(root);
-                                this.graph.layoutTree(root, true);
-                              }
-
+    yield { step: 6 };          this.graph.layoutTree(root, true);
+                              } else {
                               const element = this.elements[i];
                               this.tree[element] = {};
     yield { step: 6 };        this.graph.addNode(element);
 
                               let ptr = this.tree;
                               parent = root;
-
+    yield { step: 12 };                            
     yield { step: 14 };       while (ptr) {
     yield { step: 16 };         if (element < parent) {
                                   if (this.tree[parent].left !== undefined) {
@@ -160,6 +160,7 @@ export default {
                                 this.tree[parent].right = element;
     yield { step: 24 };         this.graph.addEdge(parent, element);
                               }
+                            }
                             }
   },
 };

@@ -1,6 +1,6 @@
 import algorithms from '../algorithms';
 
-const DEFAULT_ALGORITHM = 'binaryTreeSearch';
+const DEFAULT_ALGORITHM = 'binaryTreeInsert';
 
 // At any time the app may call dispatch(action, params), which will trigger one of
 // the following functions. Each comment shows the expected properties in the
@@ -16,7 +16,7 @@ export const GlobalActions = {
     // This line just picks an arbitrary procedure from the pseudocode to show
     // It will need to be changed when we properly support multiple procedures
     // (e.g. insert and search)
-    const procedurePseudocode = pseudocode.Main;
+    const procedurePseudocode = pseudocode;
     const algorithmGenerator = data.run();
 
     // instantiate a graph object
