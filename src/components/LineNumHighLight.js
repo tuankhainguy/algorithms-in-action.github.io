@@ -23,12 +23,18 @@ function addIndentation(json, name) {
 }
 
 export const Global = {
-  PAINT_CODELINE: (lineOfCode1) => {
+  PAINT_CODELINE: (lineOfCode1, currentBookmark) => {
     const codeLines = [];
     let i = 0;
     for (const [key, value] of Object.entries(lineOfCode1)) {
       codeLines.push(
-        <p>
+        <p
+          key={i}
+          // eslint-disable-next-line react/destructuring-assignment
+          className={currentBookmark.step === value ? 'active' : ''}
+          index={i}
+          role="presentation"
+        >
           <span>{i + 1}</span>
           <span>{key}</span>
         </p>,
@@ -48,7 +54,7 @@ const LineNumHighLight = () => {
   return (
     <div className="line-light">
       <div className="code-container">
-        {Global.PAINT_CODELINE(lineOfCode)}
+        {Global.PAINT_CODELINE(lineOfCode, algorithm.bookmark)}
       </div>
     </div>
   );
