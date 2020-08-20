@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import findBookmark from './findBookmark';
 
+/*
 const testPseudocode = {
   P: [
     { code: 'procedure BinaryTreeSearch(needle):', bookmark: 'start', explanation: undefined },
@@ -21,3 +22,4 @@ test('find bookmark on later line', () => {
     { code: '  doSomethingElse', bookmark: 'somethingElse', explanation: 'def' },
   );
 });
+*/
