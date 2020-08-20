@@ -111,6 +111,8 @@ function addBookmark(json, name, indentation) {
 export default function parse(input) {
   const rawCode = removeLineContinuation(input);
   const json = extractCodeBlock(rawCode);
+  c = 0;
   addBookmark(json, 'Main', 0);
+  console.log(json);
   return json;
 }

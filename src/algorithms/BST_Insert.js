@@ -1,3 +1,4 @@
+/* eslint-disable require-yield */
 /* eslint-disable brace-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable comma-dangle */
@@ -12,6 +13,17 @@ export default {
   pseudocode: parse(`
   \\Code{
     Main
+    BST_Build(keys)  // return the BST that results from inserting nodes
+                     // with keys 'keys', in the given order, into an
+                     // initially empty BST
+    t <- Empty
+    for each k in keys
+    \\In{
+        t <- BST_Insert(t, k) \\Ref Insert
+    \\In}
+    \\Code}
+  \\Code{
+    Insert
     BST_Insert(t, k) // Insert key k in BST t, maintaining the BST invariant
     \\In{
         n <- new Node     // create a new node to hold key k
@@ -89,9 +101,9 @@ export default {
    * @param {array} nodes array of numbers
    * @return the new graph and tree
    */
-  init(nodes) {
+  init() {
     // set data dynamically
-    this.elements = nodes;
+    this.elements = [];
     return { 
       graph: this.graph, 
       tree: this.tree 
@@ -101,49 +113,53 @@ export default {
   // return control to the caller regularly. It yields a bookmark so the caller knows where in
   // the pseudocode the execution is up to.
   * run() {
-      const root = this.elements[0];  // take first element as root
+                            let parent;
+                            let root;
 
-      let parent;
-      if (root) {
-        this.tree[root] = { root: true };
-      }
-
-      yield { step: 'start' };  this.graph.addNode(root);
+    yield { step: 3 };      for (let i = 0; i < this.elements.length; i++) {
+                              if (i === 0) {
+                                root = this.elements[i];
+                                if (root) {
+                                  this.tree[root] = { root: true };
+                                }
+                                this.graph.addNode(root);
                                 this.graph.layoutTree(root, true);
+                              }
 
-                                for (let i = 1; i < this.elements.length; i++) {
-                                  const element = this.elements[i];
-                                  
-      yield { step: '1' };        let ptr = this.tree;
-                                  parent = root;
-                                  
-      yield { step: '2' };        while (ptr) {
-      yield { step: '4' };          if (element < parent) {
-                                      if (this.tree[parent].left !== undefined) {
-                                        // if has left child
-                                        parent = this.tree[parent].left;
-      yield { step: '5' };              ptr = this.tree[parent];
-                                      } else {
-      yield { step: '8' };                this.tree[parent].left = element;
-                                        this.tree[element] = {};
-                                        this.graph.addNode(element);
-                                        this.graph.addEdge(parent, element);
-                                        break;
-                                      }
-                                    } else if (element > parent) {
-                                      if (this.tree[parent].right !== undefined) {
-                                        // if has right child
-                                        parent = this.tree[parent].right;
-      yield { step: '6' };                ptr = this.tree[parent];
-                                    } else {
-      yield { step: '9' };                this.tree[parent].right = element;
-                                        this.tree[element] = {};
-                                        this.graph.addNode(element);
-                                        this.graph.addEdge(parent, element);
-                                        break;
-                                      }
-                                    }
-                                  } 
-      yield { step: 'end' };                          }
+                              const element = this.elements[i];
+                              this.tree[element] = {};
+    yield { step: 6 };        this.graph.addNode(element);
+
+                              let ptr = this.tree;
+                              parent = root;
+
+    yield { step: 14 };       while (ptr) {
+    yield { step: 16 };         if (element < parent) {
+                                  if (this.tree[parent].left !== undefined) {
+                                    // if has left child
+                                    parent = this.tree[parent].left;
+                                    ptr = this.tree[parent];
+                                  } else {
+                                    break;
+                                  }
+    yield { step: 18 };         } else if (element > parent) {
+                                  if (this.tree[parent].right !== undefined) {
+                                    // if has right child
+                                    parent = this.tree[parent].right;
+                                    ptr = this.tree[parent];
+                                  } else {
+                                    break;
+                                  }
+                                }
+                              }
+                              
+    yield { step: 21 };       if (element < parent) {
+                                this.tree[parent].left = element;
+    yield { step: 22 };         this.graph.addEdge(parent, element);
+    yield { step: 23 };       } else {
+                                this.tree[parent].right = element;
+    yield { step: 24 };         this.graph.addEdge(parent, element);
+                              }
+                            }
   },
 };
