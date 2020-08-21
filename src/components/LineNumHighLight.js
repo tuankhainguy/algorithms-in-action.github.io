@@ -5,11 +5,11 @@ import { GlobalContext } from '../context/GlobalState';
 // eslint-disable-next-line import/named
 import '../styles/LineNumHighLight.css';
 
-let pseaudo = '';
-const lineOfCode = {};
+let lineOfCode = {};
 
 
 function addIndentation(json, name) {
+  let pseaudo = '';
   json[name].forEach((line) => {
     if (line['ref'].length > 0) {
       pseaudo = '\xa0\xa0\xa0\xa0'.repeat(line['indentation']) + line['code'] + line['bookmark'];
@@ -47,6 +47,8 @@ export const Global = {
 
 const LineNumHighLight = () => {
   const { algorithm } = useContext(GlobalContext);
+  console.log(algorithm.pseudocode);
+  lineOfCode = {}
   addIndentation(algorithm.pseudocode, 'Main');
 
   /* render data */

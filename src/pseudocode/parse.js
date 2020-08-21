@@ -113,6 +113,5 @@ export default function parse(input) {
   const json = extractCodeBlock(rawCode);
   c = 0;
   addBookmark(json, 'Main', 0);
-  console.log(json);
   return json;
 }
