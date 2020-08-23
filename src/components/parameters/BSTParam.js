@@ -33,19 +33,11 @@ function BSTParam() {
     const successCol = '#40980B';
 
     if (success) {
-<<<<<<< HEAD
-      setLogTagText('success!');
-      setLogTagCol(successCol);
-      setLogText(`Input for ${type} algorithm is valid.`);
-    } else {
-      setLogTagText('failure!');
-=======
       setLogTagText(`${type} success!`);
       setLogTagCol(successCol);
       setLogText(`Input for ${type} algorithm is valid.`);
     } else {
       setLogTagText(`${type} failure!`);
->>>>>>> master
       setLogTagCol(warningCol);
 
       let warningText = '';
@@ -81,6 +73,7 @@ function BSTParam() {
             : insertionVal;
           // run insertion animation
           dispatch(GlobalActions.LOAD_ALGORITHM, { name: 'binaryTreeInsertion' }, nodes);
+          console.log(algorithm.tree);
         } else {
           updateParamStatus(INSERTION, insertionVal, false);
         }
@@ -112,48 +105,6 @@ function BSTParam() {
   return (
     <>
       <div className="BSTForm">
-<<<<<<< HEAD
-        <form className="insertionForm" onSubmit={handleSubmit}>
-          <label>
-            <div>Insertion</div>
-            <input
-              name={INSERTION}
-              className="inputText"
-              type="text"
-              value={insertionVal}
-              placeholder="5,8,10,3,1,6,9,7,2,0,4"
-              data-testid="insertionText"
-              onChange={(e) => setInsertionVal(e.target.value)}
-            />
-          </label>
-          <input
-            className="inputSubmit"
-            type="submit"
-            value="Run Insertion"
-            data-testid="insertionSubmit"
-          />
-        </form>
-
-        <form className="searchForm" onSubmit={handleSubmit}>
-          <label>
-            <div>Search</div>
-            <input
-              name={SEARCH}
-              className="inputText"
-              type="text"
-              placeholder="5,8,10,3,1,6,9,7,2,0,4"
-              value={searchVal}
-              data-testid="searchText"
-              onChange={(e) => setSearchVal(e.target.value)}
-            />
-          </label>
-          <input
-            className="inputSubmit"
-            type="submit"
-            value="Run Search"
-            data-testid="searchSubmit"
-          />
-=======
 
         <form className="insertionForm" onSubmit={handleSubmit}>
           <div className="outerInput">
@@ -198,7 +149,6 @@ function BSTParam() {
               data-testid="searchSubmit"
             />
           </div>
->>>>>>> master
         </form>
       </div>
 

@@ -19,7 +19,7 @@ export const GlobalActions = {
     // This line just picks an arbitrary procedure from the pseudocode to show
     // It will need to be changed when we properly support multiple procedures
     // (e.g. insert and search)
-    const procedurePseudocode = pseudocode[Object.keys(pseudocode)[0]];
+    const procedurePseudocode = pseudocode;
 
     // clear previous graph
     if (controller.reset) {

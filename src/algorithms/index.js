@@ -1,8 +1,8 @@
 /* eslint quote-props: 0 */
 import React from 'react';
 import * as Explanation from './explanations';
-import BinarySearchTree from './BinarySearchTree';
-import binaryTreeInsertion from './binaryTreeInsertion';
+import BinarySearchTree from './BST_Search';
+import binaryTreeInsertion from './BST_Insert';
 import * as Param from '../components/parameters';
 /*
  This file lists all the algorithms in the program, and imports
