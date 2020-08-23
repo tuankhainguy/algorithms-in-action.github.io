@@ -113,16 +113,14 @@ export default {
   // return control to the caller regularly. It yields a bookmark so the caller knows where in
   // the pseudocode the execution is up to.
   * run() {
-                            let parent;
-                            let root;
+    let parent;
+    const root = this.elements[0];
+    if (root) {
+      this.tree[root] = { root: true };
+    }
 
     yield { step: 3 };      for (let i = 0; i < this.elements.length; i++) {
-    yield { step: 4 };
                               if (i === 0) {
-                                root = this.elements[i];
-                                if (root) {
-                                  this.tree[root] = { root: true };
-                                }
                                 this.graph.addNode(root);
     yield { step: 6 };          this.graph.layoutTree(root, true);
                               } else {
@@ -157,10 +155,10 @@ export default {
                                 this.tree[parent].left = element;
     yield { step: 22 };         this.graph.addEdge(parent, element);
     yield { step: 23 };       } else {
-                                this.tree[parent].right = element;
-    yield { step: 24 };         this.graph.addEdge(parent, element);
+    yield { step: 25 };         this.tree[parent].right = element;
+    yield { step: 25 };         this.graph.addEdge(parent, element);
                               }
                             }
-                            }
+                            }       
   },
 };

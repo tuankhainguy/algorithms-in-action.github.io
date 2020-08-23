@@ -12,11 +12,11 @@ function addIndentation(json, name) {
   let pseaudo = '';
   json[name].forEach((line) => {
     if (line['ref'].length > 0) {
-      pseaudo = '\xa0\xa0\xa0\xa0'.repeat(line['indentation']) + line['code'] + line['bookmark'];
+      pseaudo = '\xa0\xa0\xa0\xa0'.repeat(line['indentation']) + line['code'];
       lineOfCode[pseaudo] = line['bookmark'];
       addIndentation(json, line['ref'], line['indentation']);
     } else {
-      pseaudo = '\xa0\xa0\xa0\xa0'.repeat(line['indentation']) + line['code'] + line['bookmark'];
+      pseaudo = '\xa0\xa0\xa0\xa0'.repeat(line['indentation']) + line['code'];
       lineOfCode[pseaudo] = line['bookmark'];
     }
   });

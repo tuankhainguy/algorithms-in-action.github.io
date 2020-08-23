@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable dot-notation */
 /* eslint-disable linebreak-style */
+// Remove the space before and after the pseudocode
 function removeLineContinuation(input) {
   const lines = input.split('\n');
   const output = [];
@@ -18,6 +19,7 @@ function removeLineContinuation(input) {
 }
 
 
+// Extract the /Code {} section from pseudocode
 function extractCode(lines) {
   const jsons = [];
   let json = {};
@@ -64,6 +66,9 @@ function extractCode(lines) {
   return jsons;
 }
 
+
+// For exch code block, in other words /Code {} section,
+// extract the code, explanation, indentation and reference information.
 function extractCodeBlock(lines) {
   let codeBlock = 'Default';
   const json = {};
@@ -90,8 +95,11 @@ function extractCodeBlock(lines) {
   return json;
 }
 
+// Global value in this class scope for counting the bookmark.
 let c = 0;
 
+
+// Add bookmark and indentation recurvely.
 function addBookmark(json, name, indentation) {
   json[name].forEach((line) => {
     c += 1;
