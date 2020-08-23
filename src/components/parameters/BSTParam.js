@@ -33,11 +33,19 @@ function BSTParam() {
     const successCol = '#40980B';
 
     if (success) {
+<<<<<<< HEAD
       setLogTagText('success!');
       setLogTagCol(successCol);
       setLogText(`Input for ${type} algorithm is valid.`);
     } else {
       setLogTagText('failure!');
+=======
+      setLogTagText(`${type} success!`);
+      setLogTagCol(successCol);
+      setLogText(`Input for ${type} algorithm is valid.`);
+    } else {
+      setLogTagText(`${type} failure!`);
+>>>>>>> master
       setLogTagCol(warningCol);
 
       let warningText = '';
@@ -104,6 +112,7 @@ function BSTParam() {
   return (
     <>
       <div className="BSTForm">
+<<<<<<< HEAD
         <form className="insertionForm" onSubmit={handleSubmit}>
           <label>
             <div>Insertion</div>
@@ -144,6 +153,52 @@ function BSTParam() {
             value="Run Search"
             data-testid="searchSubmit"
           />
+=======
+
+        <form className="insertionForm" onSubmit={handleSubmit}>
+          <div className="outerInput">
+            <label>
+              <input
+                name={INSERTION}
+                className="inputText"
+                type="text"
+                value={insertionVal}
+                data-testid="insertionText"
+                placeholder="e.g. 4,2,3,1,2,3,4,5"
+                onChange={(e) => setInsertionVal(e.target.value)}
+              />
+            </label>
+            <input
+              className="inputSubmit"
+              type="submit"
+              value="Insert"
+              data-testid="insertionSubmit"
+            />
+          </div>
+        </form>
+
+        <form className="searchForm" onSubmit={handleSubmit}>
+          <div className="outerInput">
+            <label>
+              <input
+                name={SEARCH}
+                className="inputText"
+                type="text"
+                value={searchVal}
+                data-testid="searchText"
+                placeholder="e.g. 17"
+                onChange={(e) => setSearchVal(e.target.value)}
+              />
+            </label>
+            <input
+
+              className="inputSubmit"
+              type="submit"
+              value="Search"
+              data-testid="searchSubmit"
+            />
+          </div>
+>>>>>>> master
         </form>
       </div>
 
