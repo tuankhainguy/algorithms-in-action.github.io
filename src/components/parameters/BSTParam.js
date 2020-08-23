@@ -73,7 +73,6 @@ function BSTParam() {
             : insertionVal;
           // run insertion animation
           dispatch(GlobalActions.LOAD_ALGORITHM, { name: 'binaryTreeInsertion' }, nodes);
-          console.log(algorithm.tree);
         } else {
           updateParamStatus(INSERTION, insertionVal, false);
         }
