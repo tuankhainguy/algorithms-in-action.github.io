@@ -47,7 +47,7 @@ export const Global = {
 
 const LineNumHighLight = () => {
   const { algorithm } = useContext(GlobalContext);
-  lineOfCode = {}
+  lineOfCode = {};
   addIndentation(algorithm.pseudocode, 'Main');
 
   /* render data */
