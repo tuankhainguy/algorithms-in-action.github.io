@@ -12,8 +12,8 @@
 /* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 import React from 'react';
-import Renderer from '../../common/Renderer/index';
-import { classes, distance } from '../../common/util';
+import Renderer from '../Renderer/index';
+import { classes, distance } from '../util';
 import styles from './GraphRenderer.module.scss';
 
 class GraphRenderer extends Renderer {
@@ -116,12 +116,12 @@ class GraphRenderer extends Renderer {
         }
         {
           nodes.map(node => {
-            const { id, x, y, weight, visitedCount, selectedCount, value } = node;
+            const { id, x, y, weight, visitedCount, selectedCount } = node;
             return (
               <g className={classes(styles.node, selectedCount && styles.selected, visitedCount && styles.visited)}
                  key={id} transform={`translate(${x},${y})`}>
                 <circle className={styles.circle} r={nodeRadius} />
-                <text className={styles.id}>{value}</text>
+                <text className={styles.id}>{id}</text>
                 {
                   isWeighted &&
                   <text className={styles.weight} x={nodeRadius + nodeWeightGap}>{this.toString(weight)}</text>
