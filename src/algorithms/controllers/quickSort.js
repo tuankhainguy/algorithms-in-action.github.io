@@ -207,7 +207,7 @@ export default {
           console.log(leftArray, rightArray, _parentId);
           vis.graph.addNode(`${_left}/${_p - 1}`, FormatArray(leftArray));
           vis.graph.addEdge(_parentId, `${_left}/${_p - 1}`);
-          vis.graph.addNode(`p${_parentId}`, FormatArray(_a[_p]));
+          vis.graph.addNode(`p${_parentId}`, _a[_p]);
           vis.graph.addEdge(_parentId, `p${_parentId}`);
           vis.graph.addNode(`${_right}/${_p + 1}`, FormatArray(rightArray));
           vis.graph.addEdge(_parentId, `${_right}/${_p + 1}`);
