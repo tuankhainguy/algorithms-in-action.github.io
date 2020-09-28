@@ -120,7 +120,6 @@ class GraphRenderer extends Renderer {
             return (
               <g className={classes(styles.node, selectedCount && styles.selected, visitedCount && styles.visited)}
                  key={id} transform={`translate(${x},${y})`}>
-                <circle className={styles.circle} r={nodeRadius} />
                 <text className={styles.id}>{value}</text>
                 {
                   isWeighted &&

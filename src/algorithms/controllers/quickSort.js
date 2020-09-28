@@ -183,6 +183,18 @@ export default {
       return [i, a]; // Return [pivot location, array values]
     }
 
+    function FormatArray(array) {
+      let result = '[';
+      for (let i = 0; i < array.length; i += 1) {
+        result += array[i];
+        if (i < array.length - 1) {
+          result += ',';
+        }
+      }
+      result += ']';
+      return result;
+    }
+
     function QuickSort(array, left, right, parentId) {
       let a = array;
       let p;
@@ -193,11 +205,11 @@ export default {
           const leftArray = _a.slice(_left, _p);
           const rightArray = _a.slice(_p + 1, _right + 1);
           console.log(leftArray, rightArray, _parentId);
-          vis.graph.addNode(`${_left}/${_p - 1}`, leftArray);
+          vis.graph.addNode(`${_left}/${_p - 1}`, FormatArray(leftArray));
           vis.graph.addEdge(_parentId, `${_left}/${_p - 1}`);
-          vis.graph.addNode(`p${_parentId}`, _a[_p]);
+          vis.graph.addNode(`p${_parentId}`, FormatArray(_a[_p]));
           vis.graph.addEdge(_parentId, `p${_parentId}`);
-          vis.graph.addNode(`${_right}/${_p + 1}`, rightArray);
+          vis.graph.addNode(`${_right}/${_p + 1}`, FormatArray(rightArray));
           vis.graph.addEdge(_parentId, `${_right}/${_p + 1}`);
         }, [a, left, p, right, parentId]);
         QuickSort(a, left, p - 1, `${left}/${p - 1}`);
@@ -208,7 +220,7 @@ export default {
     }
 
     chunker.add(1, (vis, _nodes) => {
-      vis.graph.addNode(`0/${_nodes.length - 1}`, _nodes);
+      vis.graph.addNode(`0/${_nodes.length - 1}`, FormatArray(_nodes));
       vis.graph.layoutTree(`0/${_nodes.length - 1}`, false);
     }, [nodes]);
     return QuickSort(nodes, 0, nodes.length - 1, `0/${nodes.length - 1}`);
