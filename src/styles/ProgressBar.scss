@@ -189,7 +189,8 @@ $textHeight: 30px;
 $border: 4px;
 
 .progressLable {
-  position: absolute;
+  display: flex;
+  position: flex;
   z-index: 100;
   top: $border;
   left: $border;

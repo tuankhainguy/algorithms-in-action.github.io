@@ -4,6 +4,7 @@
 
 
 .sliderContainer {
+  position: flex;
   display: flex;
   background-color: var(--mid-control-slider-bg);
   padding: 0 16px;
