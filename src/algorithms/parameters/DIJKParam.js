@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import MatrixParam from './helpers/MatrixParam';
+// import MatrixParam from './helpers/MatrixParam';
+import EuclideanMatrixParams from './helpers/EuclideanMatrixParams';
 import '../../styles/Param.scss';
 
 const DEFAULT_SIZE = 5;
@@ -13,7 +14,7 @@ function DijkstraParam() {
   return (
     <>
       {/* Matrix input */}
-      <MatrixParam
+      <EuclideanMatrixParams
         name="dijkstra"
         mode="find"
         defaultSize={DEFAULT_SIZE}

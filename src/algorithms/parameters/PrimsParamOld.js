@@ -32,4 +32,4 @@ function PrimsParamOld() {
   );
 }
 
-export default OldPrimsParam;
+export default PrimsParamOld;

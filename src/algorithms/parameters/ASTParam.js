@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import MatrixParam from './helpers/MatrixParam';
+// import MatrixParam from './helpers/MatrixParam';
 import '../../styles/Param.scss';
+import EuclideanMatrixParams from './helpers/EuclideanMatrixParams';
 
 const DEFAULT_SIZE = 5;
 const ASTAR = 'A* Algorithm';
@@ -13,7 +14,7 @@ function ASTParam() {
   return (
     <>
       {/* Matrix input */}
-      <MatrixParam
+      <EuclideanMatrixParams
         name="A*"
         mode="find"
         defaultSize={DEFAULT_SIZE}

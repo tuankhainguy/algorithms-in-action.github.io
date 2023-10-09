@@ -15,7 +15,7 @@ export default {
     };
   },
 
-  run(chunker, { matrix }) {
+  run(chunker, { edgeValueMatrix, coordsMatrix }) {
     // String Variables used in displaying algo
     const algNameStr = 'dijkstra';
     const dashStr = '-';
@@ -24,8 +24,9 @@ export default {
     const lessThanStr = '<';
     const notLessThanStr = '≮';
 
-    const numVertices = matrix.length;
-    const E = [...matrix];
+    const numVertices = edgeValueMatrix.length;
+    const E = [...edgeValueMatrix];
+    const coords = [...coordsMatrix];
     const minCosts = [];
     const parents = [];
     const nodes = [];  
@@ -50,12 +51,12 @@ export default {
 
     chunker.add(
       1,
-      (vis, array) => {
+      (vis, array, coordsArray) => {
         vis.graph.directed(false);
         vis.graph.weighted(true);
-        vis.graph.set(array, Array.from({ length: matrix.length }, (v, k) => (k + 1)));
+        vis.graph.set(array, Array.from({ length: edgeValueMatrix.length }, (v, k) => (k + 1)), coordsArray);
       },
-      [E]
+      [E,coords]
     );
 
     // initialise each element of array Parent to zero 
@@ -187,7 +188,7 @@ export default {
       
       // for each node m neighbouring n
       for (let m = 0; m < numVertices; m++) {
-        if (matrix[currentVertex][m] !== 0
+        if (edgeValueMatrix[currentVertex][m] !== 0
             && !visited.has(m)) {  // Skip if no edge exists
           // findMinimum();
           chunker.add(
@@ -206,7 +207,7 @@ export default {
             [[nodes, parents, minCosts, finalCosts], miniIndex, last]
           );
           
-          const newCost = cost[currentVertex] + matrix[currentVertex][m];
+          const newCost = cost[currentVertex] + edgeValueMatrix[currentVertex][m];
           
           // if Cost[n]+weight(n,m)<Cost[m]
           let tempString = minCosts[m + 1];

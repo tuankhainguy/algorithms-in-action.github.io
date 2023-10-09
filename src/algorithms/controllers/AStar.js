@@ -15,10 +15,11 @@ export default {
     };
   },
 
-  run(chunker, { matrix }) {
-    const numVertices = matrix.length;
+  run(chunker, {edgeValueMatrix , coordsMatrix}) {
+    const numVertices = edgeValueMatrix.length;
     const INFINITY = Number.MAX_SAFE_INTEGER; 
-    const E = [...matrix]  
+    const E = [...edgeValueMatrix];
+    const coords = [...coordsMatrix];
     const minCosts = [];
     const parents = [];
     const nodes = [];  
@@ -54,12 +55,12 @@ export default {
 
     chunker.add(
       1,
-      (vis, array) => {
+      (vis, array, coordsArray) => {
         vis.graph.directed(false);
         vis.graph.weighted(true);
-        vis.graph.set(array, Array.from({ length: matrix.length }, (v, k) => (k + 1)));
+        vis.graph.set(array, Array.from({ length: edgeValueMatrix.length }, (v, k) => (k + 1)), coordsArray);
       },
-      [E]
+      [E, coords]
     ); 
 
   
@@ -202,7 +203,7 @@ export default {
       /// for each node m neighbouting n
       for (let m = 0; m < numVertices; m++) {
         
-        if (matrix[currentVertex][m] !== 0 &&
+        if (edgeValueMatrix[currentVertex][m] !== 0 &&
           !visited.has(m)) {  // Skip if no edge exists
 
             
@@ -226,7 +227,7 @@ export default {
             [[nodes,heuristics,parents, minCosts,finalCosts], miniIndex,last]
           );
           
-          const newCost = cost[currentVertex] + matrix[currentVertex][m];
+          const newCost = cost[currentVertex] + edgeValueMatrix[currentVertex][m];
           
           /// if Cost[n]+weight(n,m)<Cost[m]
           let tempString = minCosts[m+1];
