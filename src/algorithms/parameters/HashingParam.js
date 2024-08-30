@@ -56,7 +56,7 @@ function HashingParam() {
 
     const visualiser = algorithm.chunker.visualisers;
     dispatch(GlobalActions.RUN_ALGORITHM, {
-      name: 'Hashing (li',
+      name: 'Hashing (LP)',
       mode: 'insertion',
       visualiser,
     });
