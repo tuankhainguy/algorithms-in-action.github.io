@@ -161,12 +161,10 @@ const allalgs = {
     explanation: Explanation.HashingExp,
     extraInfo: ExtraInfo.HashingInfo,
     pseudocode: {
-      insertion: Pseudocode.HashingInsert,
-      search: Pseudocode.HashingSearch,
+      hash: Pseudocode.HashingLP,
     },
     controller: {
-      insertion: Controller.HashingInsert,
-      search: Controller.HashingSearch,
+      hash: Controller.HashingLP,
     },
   },
 
@@ -178,12 +176,10 @@ const allalgs = {
     explanation: Explanation.HashingExp,
     extraInfo: ExtraInfo.HashingInfo,
     pseudocode: {
-      insertion: Pseudocode.HashingInsert,
-      search: Pseudocode.HashingSearch,
+      hash: Pseudocode.HashingDH,
     },
     controller: {
-      insertion: Controller.HashingInsert,
-      search: Controller.HashingSearch,
+      hash: Controller.HashingDH,
     },
   },
 
