@@ -50,7 +50,7 @@ function HashingDHParam() {
   });
 
   const handleChange = (e) => {
-    setSize({ ...UNCHECKED, [e.target.name]: true })
+    // setSize({ ...UNCHECKED, [e.target.name]: true })
     e.preventDefault();
     const inputValue = e.target[0].value;
 
