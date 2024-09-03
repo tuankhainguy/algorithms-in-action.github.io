@@ -12,7 +12,7 @@ export default {
     };
   },
 
-  run(chunker, params) {
+  run(chunker) {
     chunker.add(
       'HashInit(T)',
       (vis, array) => {
