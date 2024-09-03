@@ -74,7 +74,7 @@ function HashingParam() {
     <>
       <div className="form">
         <ListParam
-          name="HashingLP"
+          name="Hashing"
           buttonName="INSERT"
           mode="insertion"
           formClassName="formLeft"
@@ -88,7 +88,7 @@ function HashingParam() {
 
 
         {<SingleValueParam
-          name="HashingLP"
+          name="Hashing"
           buttonName="SEARCH"
           mode="search"
           formClassName="formRight"
