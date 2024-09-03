@@ -5,7 +5,7 @@ export default {
     return {
       array: {
         instance: new Array2DTracer('array', null, 'Hash Table'),
-        order: 1,
+        order: 0,
       },
     };
   },
@@ -14,10 +14,10 @@ export default {
     chunker.add(
       'HashSearch(T, k)',
       (vis, array) => {
-        vis.array.set(array, 'HashingLP');
+        vis.array.set(array, 'HashingDH');
         vis.array.hideArrayAtIndex(2);
       },
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
     );
   },
 };
