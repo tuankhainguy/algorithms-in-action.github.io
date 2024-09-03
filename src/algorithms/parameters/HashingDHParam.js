@@ -39,7 +39,7 @@ const BlueRadio = withStyles({
 //const ERROR_TOO_LARGE = `Please enter only ${HASHING_FUNCTION} digits in the table`;
 
 
-function HashingParam() {
+function HashingDHParam() {
   const [message, setMessage] = useState(null);
   const { algorithm, dispatch } = useContext(GlobalContext);
   const [array, setArray] = useState(DEFAULT_ARRAY);
@@ -125,4 +125,4 @@ function HashingParam() {
   );
 }
 
-export default HashingParam;
+export default HashingDHParam;
