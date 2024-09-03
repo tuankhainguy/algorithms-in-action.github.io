@@ -10,12 +10,14 @@ export default {
     };
   },
 
-  run(chunker, params) {
+  run(chunker) {
     chunker.add(
-      'Insert',
+      'HashSearch(T, k)',
       (vis, array) => {
-        vis.array.set(array, 'Hashing');
+        vis.array.set(array, 'HashingLP');
+        vis.array.hideArrayAtIndex(2);
       },
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     );
   },
 };
