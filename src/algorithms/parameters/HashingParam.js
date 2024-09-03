@@ -54,11 +54,11 @@ function HashingParam() {
     e.preventDefault();
     const inputValue = e.target[0].value;
 
-    const visualiser = algorithm.chunker.visualisers;
+    // const visualiser = algorithm.chunker.visualisers;
     dispatch(GlobalActions.RUN_ALGORITHM, {
       name: 'HashingLP',
       mode: 'hash',
-      visualiser,
+      // visualiser,
     });
   }
 
