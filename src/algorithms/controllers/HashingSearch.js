@@ -1,3 +1,5 @@
+// Depreciated code, removed due to unnecessary code reuse
+
 export default {
     initVisualisers() {
     },

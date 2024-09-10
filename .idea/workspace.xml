@@ -66,7 +66,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725347405907</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added double hashing as well as refactored the code to fit with the logic described in the psedocode.">
+      <option name="closed" value="true" />
+      <created>1725444642933</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725444642933</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,6 +97,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updating functions" />
     <MESSAGE value="Generalised code so that it works for big and small hashes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Generalised code so that it works for big and small hashes" />
+    <MESSAGE value="Added double hashing as well as refactored the code to fit with the logic described in the psedocode." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added double hashing as well as refactored the code to fit with the logic described in the psedocode." />
   </component>
 </project>
