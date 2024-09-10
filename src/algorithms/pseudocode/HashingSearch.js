@@ -8,6 +8,8 @@ export default parse(`
         i <- hash(k) \\Ref Hash1
         Choose Increment value for stepping through T \\Ref SetIncrementLinearProbing
         while not (T[i] = k or T[i] = Empty) // search for T or Empty
+        \\Expl{We do not allow duplicates to be inserted into the table.
+        \\Expl}
         \\In{
             i <- (i + Increment) mod TableSize
             \\Expl{ T[i] is not k or Empty so we jump ahead Increment

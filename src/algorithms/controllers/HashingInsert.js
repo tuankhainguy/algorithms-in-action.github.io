@@ -52,19 +52,26 @@ export default {
 
 // insert input into hash table, hashing algorithm based on table size and collision handling type
         function hashInsert(table, key) {
-            insertions = insertions + 1;
-            // get initial hash index
-            let i = hash(key);
-
-            // determines how much to increment in case of a collision
-            let increment = setIncrement(key);
-            // linear probing collision handling
-            while (typeof table[i] !== 'undefined' && table[i] !== null) {
-                i = (i + increment) % table.length;
-
+            let tableSize = tableType == SMALLTABLE ? SMALL : BIG;
+            // checks if all but the last slot is filled
+            if (insertions == tableSize) {
+                console.log("Table too full");
             }
-            table[i] = key;
+            else {
+                insertions = insertions + 1;
+                // get initial hash index
+                let i = hash(key);
 
+                // determines how much to increment in case of a collision
+                let increment = setIncrement(key);
+                // collision handling, if the key is already in the table, it will be replaced with
+                // the input as if the slot was empty
+                while (typeof table[i] !== 'undefined' && table[i] !== null && table[i] != key) {
+                    i = (i + increment) % table.length;
+
+                }
+                table[i] = key;
+            }
         }
 // finds input index in table
         function hashSearch(table, key) {

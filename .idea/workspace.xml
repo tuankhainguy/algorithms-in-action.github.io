@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f40d145-548f-4701-8a68-ff83c0f7b184" name="Changes" comment="">
+    <list default="true" id="9f40d145-548f-4701-8a68-ff83c0f7b184" name="Changes" comment="Hashing insert case for key that's already in table added. Updated pseudocode to match updated pseudocode given by clients.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithms/controllers/HashingInsert.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/controllers/HashingInsert.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithms/controllers/HashingSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/controllers/HashingSearch.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithms/pseudocode/HashingInsert.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/pseudocode/HashingInsert.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithms/pseudocode/HashingSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/pseudocode/HashingSearch.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +75,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725444642933</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Moved hashSearch to HashingInsert.js due to it having the same logic as hashDelete, promoting code reuse and remove redundancy of using the duplicate constants and functions over two files. Added new constants for detecting hash parameters to remove the number of arbitrary values. Added comments to describe the logic of the code.">
+      <option name="closed" value="true" />
+      <created>1725940517018</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725940517018</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -98,6 +107,9 @@
     <MESSAGE value="Updating functions" />
     <MESSAGE value="Generalised code so that it works for big and small hashes" />
     <MESSAGE value="Added double hashing as well as refactored the code to fit with the logic described in the psedocode." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added double hashing as well as refactored the code to fit with the logic described in the psedocode." />
+    <MESSAGE value="Moved hashSearch to HashingInsert.js due to it having the same logic as hashDelete, promoting code reuse and remove redundancy of using the duplicate constants and functions over two files. Added new constants for detecting hash parameters to remove the number of arbitrary values. Added comments to describe the logic of the code." />
+    <MESSAGE value="Added table fullness detection to hashInsert." />
+    <MESSAGE value="Hashing insert case for key that's already in table added. Updated pseudocode to match updated pseudocode given by clients." />
+    <option name="LAST_COMMIT_MESSAGE" value="Hashing insert case for key that's already in table added. Updated pseudocode to match updated pseudocode given by clients." />
   </component>
 </project>

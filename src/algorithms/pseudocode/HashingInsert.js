@@ -26,14 +26,16 @@ export default parse(`
     HashInsert(T, k)  // Insert key k into table T
         \\In{
             Check how full the table is
-            \\Expl{ If the table gets too full (over 80%, say), performance degrades
-                a lot. Ideally, we should prevent this by allocating a larger table
-                (eg, the size being a prime number around twice the size of T),
-                inserting each element into the new table and continuing with T
-                being the larger table. It is essential the table has at least one
-                slot Empty, otherwise the Search code may loop; we just return
-                with failure here rather than fill the last slot or expand the table.
+            \\Expl{ One empty slot must always be maintained,
+                to prevent to potential for infinite looping. Even before this point,
+                performance degrades if the table gets too full, say over 80% full.
+                See Overview for more details.
             \\Expl}
+            \\Note{ The animation should stop inserting with a "Table too full" message
+                if there is an attempt to fill the last slot.
+                It would be good to ask if student wants to switch to "Search" and then allow searches.
+            \\Note}
+
             Insertions <- Insertions + 1
             \\Expl{ To check how full the table is we can maintain a simple
                 counter.
@@ -41,10 +43,11 @@ export default parse(`
             i <- hash(k) \\Ref Hash1
             Choose Increment value in case of collisions \\Ref SetIncrementLinearProbing
             while T[i] is occupied by another element // search for unoccupied slot
-            \\Expl{ If T[i] = k then k already exists in the table. Ideally,
-                duplicates should be avoided as they decrease performance and
-                search just returns the first one.
-            \\Expl}
+            \\Expl{ Duplicate keys should be avoided for hashing. If T[i] = k
+                   then k already exists in the table. We could explicitly check
+                   for this but the code here simply over-writes the previous
+                   ocurrence of k, as if the slot was empty.
+           \\Expl}
                 \\In{
                     i <- (i + Increment) mod TableSize
                     \\Expl{ T[i] is occupied so we jump ahead Increment steps.
