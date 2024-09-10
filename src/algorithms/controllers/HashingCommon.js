@@ -22,7 +22,7 @@ export function hash1(chunker, bookmark, key, hashValue) {
 }
 
 export function hash2(chunker, key, hashValue) {
-  return (key * BIGPRIME2) % hashValue;
+  return (key * BIGPRIME2) % hashValue + 1;
 }
 
 export function setIncrement(
@@ -47,6 +47,23 @@ export function setIncrement(
     [increment]
   )
   return increment;
+}
+
+
+export function hashSearch(
+    chunker, table, key, hashValue, collisionHandling
+) {
+
+  // index
+  let i = hash1(chunker, 'HashSearch(T, k)', key, hashValue);
+  let increment = setIncrement(
+    chunker, 'HashSearch(T, k)', key, hashValue, collisionHandling
+  );
+
+  while (table[i] != key) {
+    i = (i + increment) % table.length;
+  }
+  return i;
 }
 
 export function hashDelete(

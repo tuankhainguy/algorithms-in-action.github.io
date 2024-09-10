@@ -23,18 +23,5 @@ export default {
 
     chunker.add('HashSearch(T, k)');
     chunker.add('HashSearch(T, k)');
-
-    function hashSearch(table, key) {
-      // index
-      let i = hash1(chunker, 'HashSearch(T, k)', key, hashValue);
-      let increment = setIncrement(
-        chunker, 'HashSearch(T, k)', key, hashValue, params.name
-      );
-
-      while (table[i] != key) {
-        i = (i + increment) % table.length;
-      }
-      return i;
-    }
   },
 };

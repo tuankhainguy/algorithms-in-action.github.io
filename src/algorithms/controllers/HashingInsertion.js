@@ -11,7 +11,7 @@ const IBookmarks = {
   Hash1: 4,
   ChooseIncrement: 5,
   Probing: 6,
-  HandlingCollision: 7,
+  Collision: 7,
   PutIn: 8,
   Done: 9,
 }
@@ -69,10 +69,10 @@ export default {
         },
         [key, i]
       )
-      while (typeof table[i] !== 'undefined' && table[i] !== null) {
-        i = (i + increment) % table.length;
+      while (table[i] !== undefined) {
+        i = (i + increment) % hashValue;
         chunker.add(
-          IBookmarks.HandlingCollision,
+          IBookmarks.Collision,
         )
 
         chunker.add(
@@ -93,7 +93,7 @@ export default {
         [key, i]
       )
 
-      return [key, i];
+      return i;
     }
 
     // Init hash table
@@ -102,7 +102,7 @@ export default {
     chunker.add(
       IBookmarks.Init,
       (vis, array) => {
-        vis.array.set(array, 'HashingLP', '', { rowLength: 20, rowHeader: ['Index', 'Value', ''] });
+        vis.array.set(array, params.name, '', { rowLength: 20, rowHeader: ['Index', 'Value', ''] });
         vis.array.hideArrayAtIndex([1, 2]);
       },
       [[indexArr, valueArr, nullArr]]
@@ -116,14 +116,15 @@ export default {
 
         // Init hashing animation
         vis.graph.weighted(true);
-        vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, -7], [5, -7]]);
+        vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, 0], [5, 0]]);
       },
     );
 
     let prevKey = null;
     let prevIdx = null;
     for (const key of inputs) {
-      [prevKey, prevIdx] = hashInsert(table, key, prevKey, prevIdx);
+      prevIdx = hashInsert(table, key, prevKey, prevIdx);
+      prevKey = key;
     }
 
     chunker.add(
