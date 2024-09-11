@@ -215,7 +215,7 @@ class Array2DTracer extends Tracer {
           // check if idx is in subarray
           // add i to account for header offset
           let relativeIdx = idx + 1;
-          if (relativeIdx > 0 && relativeIdx < this.splitArray.rowLength)
+          if (relativeIdx > 0 && relativeIdx <= this.splitArray.rowLength)
             _newData[row][relativeIdx].variables.push(v);
         }
 
@@ -320,7 +320,7 @@ class Array2DTracer extends Tracer {
           // check if idx is in subarray
           // add 1 to account for header offset
           let relativeIdx = idx + 1;
-          if (relativeIdx > 0 && relativeIdx < this.splitArray.rowLength) {
+          if (relativeIdx > 0 && relativeIdx <= this.splitArray.rowLength) {
             if (!this.data[i][row] || !this.data[i][row][relativeIdx]) continue;
             this.data[i][row][relativeIdx].value = newValue;
           }

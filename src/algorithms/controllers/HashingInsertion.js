@@ -120,8 +120,8 @@ export default {
       },
     );
 
-    let prevKey = null;
-    let prevIdx = null;
+    let prevKey;
+    let prevIdx;
     for (const key of inputs) {
       prevIdx = hashInsert(table, key, prevKey, prevIdx);
       prevKey = key;

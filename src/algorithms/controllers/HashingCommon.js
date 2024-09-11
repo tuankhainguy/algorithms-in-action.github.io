@@ -21,8 +21,16 @@ export function hash1(chunker, bookmark, key, hashValue) {
   return hashed;
 }
 
-export function hash2(chunker, key, hashValue) {
-  return (key * BIGPRIME2) % hashValue + 1;
+export function hash2(chunker, bookmark, key, hashValue) {
+  let hashed = (key * BIGPRIME2) % hashValue + 1;
+  chunker.add(
+    bookmark,
+    (vis, val) => {
+      vis.graph.updateNode(HASH_TABLE.Value, val);
+    },
+    [hashed]
+  )
+  return hashed;
 }
 
 export function setIncrement(
