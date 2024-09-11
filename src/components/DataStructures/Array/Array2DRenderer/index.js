@@ -19,7 +19,7 @@
 /* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 // import Array1DRenderer from '../Array1DRenderer/index';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 import Renderer from '../../common/Renderer/index';
@@ -42,6 +42,32 @@ export function switchmode(modetype = mode()) {
   return modename;
 }
 
+const useScroll = () => {
+  const elRef = useRef(null);
+  const executeScroll = () => elRef.current.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  });
+
+  return [executeScroll, elRef];
+};
+
+const ScrollToVariable = (v) => {
+  const [executeScroll, elRef] = useScroll();
+  useEffect(executeScroll, []);
+
+  return (
+    <motion.p
+      layoutId={v.value}
+      key={v.value}
+      className={styles.variable}
+      ref={elRef}
+    >
+      {v.value}
+    </motion.p>
+  );
+}
+
 class Array2DRenderer extends Renderer {
   constructor(props) {
     super(props);
@@ -60,8 +86,11 @@ class Array2DRenderer extends Renderer {
       listOfNumbers,
       motionOn,
       hideArrayAtIdx,
-      splitArray = { rowLength: null, rowHeader: [] }
+      splitArray
     } = this.props.data;
+    let centerX = this.centerX;
+    let centerY = this.centerY;
+    let zoom = this.zoom;
 
     const isArray1D = true;
     let render = [];
@@ -73,27 +102,8 @@ class Array2DRenderer extends Renderer {
     }
     // const isArray1D = this instanceof Array1DRenderer;
 
-    if (splitArray === null || splitArray.rowLength < 1) {
-      let longestRow = data.reduce(
-        (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
-        []
-      );
-
-      render.push(createRender(data, this.toString, longestRow));
-
-    } else {
-      for (const arr of data) {
-        let longestRow = arr.reduce(
-          (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
-          []
-        );
-
-        render.push(createRender(arr, this.toString, longestRow));
-      }
-    }
-
     // XXX sometimes caption (listOfNumbers) is longer than any row...
-    function createRender(data, toString, longestRow) {
+    function createArray(data, toString, longestRow, elRef) {
       return (
         <tbody>
         {algo === 'unionFind' && ( // adding the array indicies for union find
@@ -288,13 +298,9 @@ class Array2DRenderer extends Renderer {
                       key={j}
                     >
                       {col.variables.map((v) => (
-                        <motion.p
-                          layoutId={v}
-                          key={v}
-                          className={styles.variable}
-                        >
-                        {v}
-                        </motion.p>
+                        <ScrollToVariable
+                          value={v}
+                        />
                       ))}
                     </td>
                   ))}
@@ -306,73 +312,119 @@ class Array2DRenderer extends Renderer {
       )
     }
 
-    return (
-      <table
-        className={switchmode(mode())}
-        style={{
-          marginLeft: -this.centerX * 2,
-            marginTop: -this.centerY * 2,
-            transform: `scale(${this.zoom})`,
-        }}
-      >
-        {render}
-        {algo === 'tc' && (
-          <caption kth-tag="transitive_closure">k = {kth}</caption>
-        )}
-        {algo == 'unionFind' && ( // bottom centre caption for union find
-          <caption kth-tag="unionFind" className={styles.bottom_caption}>
-            <span className={styles.pseudocode_function}>Union</span>({kth})
-          </caption>
-        )}
-        {algo === 'DFS' && (
-          <caption
-            className={algo === 'DFS' ? styles.captionDFS : ''}
-            kth-tag="dfs_caption"
+    function createRender(render) {
+      return (
+        <table
+          className={switchmode(mode())}
+          style={{
+            marginLeft: -centerX * 2,
+            marginTop: -centerY * 2,
+            transform: `scale(${zoom})`,
+          }}
+        >
+          {render}
+          {algo === 'tc' && (
+            <caption kth-tag="transitive_closure">k = {kth}</caption>
+          )}
+          {algo == 'unionFind' && ( // bottom centre caption for union find
+            <caption kth-tag="unionFind" className={styles.bottom_caption}>
+              <span className={styles.pseudocode_function}>Union</span>({kth})
+            </caption>
+          )}
+          {algo === 'DFS' && (
+            <caption
+              className={algo === 'DFS' ? styles.captionDFS : ''}
+              kth-tag="dfs_caption"
+            >
+               Nodes (stack):&emsp; {listOfNumbers}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            </caption>
+          )}
+          {algo === 'DFSrec' && (
+            <caption
+              className={algo === 'DFSrec' ? styles.captionDFSrec : ''}
+              kth-tag="dfsrec_caption"
+            >
+               Call stack (n,p):&emsp; {listOfNumbers}&emsp;&emsp;
+            </caption>
+          )}
+          {algo === 'msort_arr_td' && (
+            <caption
+              className={algo === 'msort_arr_td' ? styles.captionmsort_arr_td : ''}
+              kth-tag="msort_arr_td_caption"
+            >
+               Call stack (n,p):&emsp; {listOfNumbers}&emsp;&emsp;
+            </caption>
+          )}
+          {algo === 'msort_lista_td' && listOfNumbers && (
+            <caption
+              className={algo === 'msort_lista_td' ?  styles.captionmsort_lista_td : ''}
+              kth-tag="msort_lista_td_caption"
+            >
+               Call stack (L, len):&emsp; {listOfNumbers}&emsp;&emsp;
+            </caption>
+          )}
+          {algo === 'BFS' && (
+            <caption
+              className={algo === 'BFS' ? styles.captionBFS : ''}
+              kth-tag="bfs_caption"
+            >
+              Nodes (queue): {listOfNumbers}
+            </caption>
+          )}
+        </table>
+      )
+    }
+
+    if (splitArray === undefined || splitArray.rowLength < 1) {
+      let longestRow = data.reduce(
+        (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
+        []
+      );
+      render.push(createArray(data, this.toString, longestRow));
+      return createRender(render);
+
+    } else {
+      for (const arr of data) {
+        let longestRow = arr.reduce(
+          (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
+          []
+        );
+        render.push(createArray(arr, this.toString, longestRow));
+      }
+
+      return (
+        <div
+          className={styles.container}
+        >
+          <div
+            className={styles.array2d_container}
           >
-             Nodes (stack):&emsp; {listOfNumbers}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          </caption>
-        )}
-        {algo === 'DFSrec' && (
-          <caption
-            className={algo === 'DFSrec' ? styles.captionDFSrec : ''}
-            kth-tag="dfsrec_caption"
-          >
-             Call stack (n,p):&emsp; {listOfNumbers}&emsp;&emsp;
-          </caption>
-        )}
-        {algo === 'msort_arr_td' && (
-          <caption
-            className={algo === 'msort_arr_td' ? styles.captionmsort_arr_td : ''}
-            kth-tag="msort_arr_td_caption"
-          >
-             Call stack (n,p):&emsp; {listOfNumbers}&emsp;&emsp;
-          </caption>
-        )}
-        {algo === 'msort_lista_td' && listOfNumbers && (
-          <caption
-            className={algo === 'msort_lista_td' ?  styles.captionmsort_lista_td : ''}
-            kth-tag="msort_lista_td_caption"
-          >
-             Call stack (L, len):&emsp; {listOfNumbers}&emsp;&emsp;
-          </caption>
-        )}
-        {algo === 'BFS' && (
-          <caption
-            className={algo === 'BFS' ? styles.captionBFS : ''}
-            kth-tag="bfs_caption"
-          >
-            Nodes (queue): {listOfNumbers}
-          </caption>
-        )}
-        {algo == 'HashingLP' && kth !== '' && (
-          <caption kth-tag="unionFind" className={styles.bottom_caption}>
-            Insertions: {Array.isArray(kth) ? kth[0] : kth}
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            Increment: {Array.isArray(kth) ? kth[1] : ''}
-          </caption>
-        )}
-      </table>
-    );
+            {createRender(render)}
+          </div>
+          <div
+            style={{
+              flex: 1,
+                margin: '1% 0',
+            }}
+            >
+            {(algo === 'HashingLP' ||
+              algo === 'HashingDH' ) &&
+              kth !== '' &&
+              (
+                <span
+                className={styles.captionHashing}
+                >
+                  Insertions: {Array.isArray(kth) ? kth[0] : kth}
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                  Increment: {Array.isArray(kth) ? kth[1] : ''}
+                </span>
+              )
+            }
+          </div>
+        </div>
+      );
+    }
+
   }
 }
 

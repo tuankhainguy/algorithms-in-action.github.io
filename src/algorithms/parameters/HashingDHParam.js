@@ -15,7 +15,7 @@ import {
   errorParamMsg,
 } from './helpers/ParamHelper';
 
-const ALGORITHM_NAME = 'Hashing (linear probing)';
+const ALGORITHM_NAME = 'Hashing (double hashing)';
 const HASHING_INSERT = 'Hashing Insertion';
 const HASHING_SEARCH = 'Hashing Search';
 const HASHING_EXAMPLE = 'PLACE HOLDER ERROR MESSAGE';
@@ -95,8 +95,8 @@ function HashingDHParam() {
       dispatch(GlobalActions.RUN_ALGORITHM, {
         name: 'HashingDH',
         mode: 'search',
-        visualisers,
         hashSize: hashSize,
+        visualisers,
         target
       });
       setMessage(successParamMsg(ALGORITHM_NAME));

@@ -95,8 +95,8 @@ function HashingLPParam() {
       dispatch(GlobalActions.RUN_ALGORITHM, {
         name: 'HashingLP',
         mode: 'search',
-        visualisers,
         hashSize: hashSize,
+        visualisers,
         target
       });
       setMessage(successParamMsg(ALGORITHM_NAME));

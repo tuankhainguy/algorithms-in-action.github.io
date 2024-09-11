@@ -42,8 +42,8 @@ class Array2DTracer extends Tracer {
    * @param {array} array2d
    * @param {string} algo used to mark if it is a specific algorithm
    */
-  set(array2d = [], algo, kth = 1, splitArray = null) {
-    if (splitArray === null || splitArray.rowLength < 1) {
+  set(array2d = [], algo, kth = 1, splitArray) {
+    if (splitArray === undefined || splitArray.rowLength < 1) {
       this.data = array2d.map((array1d) =>
         [...array1d].map((value, i) => new Element(value, i))
       );
@@ -168,7 +168,7 @@ class Array2DTracer extends Tracer {
   // XXX for some reason, variables only seem to be displayed if
   // row==2, and if you don't have enough rows in the table you are
   // stuck unless you add an extra dummy row and hide it using hideArrayAtIndex
-  assignVariable(v, row, idx, changeFrom = null) {
+  assignVariable(v, row, idx, changeFrom) {
     // deep clone data so that changes to this.data are all made at the same time which will allow for tweening
     // eslint-disable-next-line consistent-return
     function customizer(val) {
@@ -181,7 +181,7 @@ class Array2DTracer extends Tracer {
         return newEl;
       }
     }
-    if (this.splitArray === null || this.splitArray.rowLength < 1) {
+    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
       const newData = cloneDeepWith(this.data, customizer);
 
       // remove all current occurences of the variable
@@ -206,7 +206,7 @@ class Array2DTracer extends Tracer {
         // remove all current occurences of the variable
         for (let y = 0; y < _newData[row].length; y++) {
           _newData[row][y].variables = _newData[row][y].variables.filter(
-            (val) => val !== ((changeFrom !== null) ? changeFrom : v)
+            (val) => val !== ((changeFrom !== undefined) ? changeFrom : v)
           );
         }
 
@@ -309,7 +309,7 @@ class Array2DTracer extends Tracer {
    * @param {*} newValue the new value.
    */
   updateValueAt(row, idx, newValue) {
-    if (this.splitArray === null || this.splitArray.rowLength < 1) {
+    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
       if (!this.data[row] || !this.data[row][idx]) {
         return;
       }
