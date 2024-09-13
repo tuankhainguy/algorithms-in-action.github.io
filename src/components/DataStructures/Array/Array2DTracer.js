@@ -329,6 +329,95 @@ class Array2DTracer extends Tracer {
       }
     }
   }
+
+  /**
+   * Get the value at the given position of the array.
+   * @param {*} x the row index.
+   * @param {*} y the column index.
+   */
+  getValueAt(x, y) {
+    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+      if (!this.data[x] || !this.data[x][y]) {
+        return;
+      }
+
+      return this.data[x][y].value;
+    } else {
+      for (let i = 0; i < this.data.length; i++) {
+        if (y !== null || y !== undefined || y >= 0) {
+          // check if y is in subarray
+          // add 1 to account for header offset
+          let relativeY = y + this.splitArray.hasHeader ? 1 : 0;
+          if (relativeY > 0 && relativeY <= this.splitArray.rowLength) {
+            if (!this.data[i][x] || !this.data[i][x][relativeY]) continue;
+            return this.data[i][x][relativeY].value;
+          }
+          y -= this.splitArray.rowLength;
+        }
+      }
+    }
+  }
+
+  /**(e) => e.value
+   * Extract the array at the given row(s) of the array.
+   * @param {*} row the row index(es).
+   * @param {*} empty the character to change to empty.
+   */
+  extractArray(row, empty) {
+    let extract = [];
+    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+      if (Array.isArray(row) && row.length) {
+        for (const i of row) {
+          extract.push(this.data[i].map((e) => e.value));
+        }
+      } else {
+        extract = this.data[row].map((e) => e.value);
+      }
+
+    } else {
+      // combine the split array and remove the headers if exist
+      let combined = [];
+      if (
+        Array.isArray(this.splitArray.rowHeader) &&
+        this.splitArray.rowHeader.length
+      ) {
+        for (const array of this.data) {
+          if (!combined.length) {
+            combined = array.map((arr) => arr.slice(1));
+            continue;
+          }
+
+          for (let i = 0; i < combined.length; i++) {
+            combined[i] = [...combined[i], ...array[i].slice(1)];
+          }
+        }
+      } else {
+        for (const array of this.data) {
+          if (!combined.length) {
+            combined = array;
+            continue;
+          }
+
+          for (let i = 0; i < combined.length; i++) {
+            combined[i] = [...combined[i], ...array[i]];
+          }
+        }
+      }
+
+      if (Array.isArray(row) && row.length) {
+        for (const i of row) {
+          extract.push(combined[i].map((e) => e.value));
+        }
+      } else {
+        extract = combined[row].map((e) => e.value);
+      }
+    }
+
+    for (let i = 0; i < extract.length; i++) {
+      extract[i] = (extract[i] === empty) ? undefined : extract[i];
+    }
+    return extract;
+  }
 }
 
 export default Array2DTracer;

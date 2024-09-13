@@ -4,6 +4,8 @@ const BIGPRIME = 3457;
 const BIGPRIME2 = 1429;
 
 
+export const EMPTY_CHAR = '-';
+
 export const HASH_TABLE = {
   Key: 0,
   Value: 1,

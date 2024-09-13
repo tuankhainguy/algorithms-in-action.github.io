@@ -1,7 +1,12 @@
 import Array2DTracer from '../../components/DataStructures/Array/Array2DTracer';
 import GraphTracer from '../../components/DataStructures/Graph/GraphTracer';
 import { HashingExp } from '../explanations';
-import { hash1, setIncrement, HASH_TABLE } from './HashingCommon';
+import {
+  hash1,
+  setIncrement,
+  HASH_TABLE,
+  EMPTY_CHAR
+} from './HashingCommon';
 
 
 const IBookmarks = {
@@ -35,7 +40,7 @@ export default {
     let inputs = params.values;
     let hashValue = params.hashSize;
     let indexArr = Array.from({ length: hashValue }, (_, i) => i);
-    let valueArr = Array(hashValue).fill('-');
+    let valueArr = Array(hashValue).fill(EMPTY_CHAR);
     let nullArr = Array(hashValue).fill('');
 
     let insertions = 0;
