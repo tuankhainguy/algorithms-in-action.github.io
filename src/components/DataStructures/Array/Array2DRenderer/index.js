@@ -375,7 +375,7 @@ class Array2DRenderer extends Renderer {
       )
     }
 
-    if (splitArray === undefined || splitArray.rowLength < 1) {
+    if (!splitArray.doSplit) {
       let longestRow = data.reduce(
         (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
         []

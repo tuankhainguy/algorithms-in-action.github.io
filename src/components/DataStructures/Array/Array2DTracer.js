@@ -44,10 +44,19 @@ class Array2DTracer extends Tracer {
    */
   set(array2d = [], algo, kth = 1, splitArray) {
     if (splitArray === undefined || splitArray.rowLength < 1) {
+      this.splitArray = {doSplit: false};
       this.data = array2d.map((array1d) =>
         [...array1d].map((value, i) => new Element(value, i))
       );
     } else {
+      this.splitArray = splitArray;
+      this.splitArray.doSplit = true;
+
+      if (Array.isArray(splitArray.rowHeader) && splitArray.rowHeader.length) {
+        this.splitArray.hasHeader = true;
+      } else {
+        this.splitArray.hasHeader = false;
+      }
       let split = [];
 
       let step = 0;
@@ -75,7 +84,6 @@ class Array2DTracer extends Tracer {
     this.motionOn = true; // whether to use animation
     this.hideArrayAtIdx = null; // to hide array at given index
     this.listOfNumbers = '';
-    this.splitArray = splitArray;
     super.set();
   }
 
@@ -181,7 +189,8 @@ class Array2DTracer extends Tracer {
         return newEl;
       }
     }
-    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+
+    if (!this.splitArray.doSplit) {
       const newData = cloneDeepWith(this.data, customizer);
 
       // remove all current occurences of the variable
@@ -309,7 +318,7 @@ class Array2DTracer extends Tracer {
    * @param {*} newValue the new value.
    */
   updateValueAt(row, idx, newValue) {
-    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+    if (!this.splitArray.doSplit) {
       if (!this.data[row] || !this.data[row][idx]) {
         return;
       }
@@ -336,7 +345,7 @@ class Array2DTracer extends Tracer {
    * @param {*} y the column index.
    */
   getValueAt(x, y) {
-    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+    if (!this.splitArray.doSplit) {
       if (!this.data[x] || !this.data[x][y]) {
         return;
       }
@@ -365,7 +374,7 @@ class Array2DTracer extends Tracer {
    */
   extractArray(row, empty) {
     let extract = [];
-    if (this.splitArray === undefined || this.splitArray.rowLength < 1) {
+    if (!this.splitArray.doSplit) {
       if (Array.isArray(row) && row.length) {
         for (const i of row) {
           extract.push(this.data[i].map((e) => e.value));
@@ -377,10 +386,7 @@ class Array2DTracer extends Tracer {
     } else {
       // combine the split array and remove the headers if exist
       let combined = [];
-      if (
-        Array.isArray(this.splitArray.rowHeader) &&
-        this.splitArray.rowHeader.length
-      ) {
+      if (this.splitArray.hasHeader) {
         for (const array of this.data) {
           if (!combined.length) {
             combined = array.map((arr) => arr.slice(1));
