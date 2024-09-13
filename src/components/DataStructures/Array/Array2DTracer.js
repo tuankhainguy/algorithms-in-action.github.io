@@ -139,18 +139,123 @@ class Array2DTracer extends Tracer {
   // a simple fill function based on aia themes
   // where green=1, yellow=2, and red=3
   fill(sx, sy, ex = sx, ey = sy, c = 0) {
-    for (let x = sx; x <= ex; x++) {
-      for (let y = sy; y <= ey; y++) {
-        this.data[x][y].fill = c === 1 || c === 2 || c === 3 ? c : 0;
+    if (!this.splitArray.doSplit) {
+      for (let x = sx; x <= ex; x++) {
+        for (let y = sy; y <= ey; y++) {
+          this.data[x][y].fill = c === 1 || c === 2 || c === 3 ? c : 0;
+        }
+      }
+    } else {
+      for (let i = 0; i < this.data.length; i++) {
+        if (sy === ey) {
+          let relativeY = sy + (this.splitArray.hasHeader ? 1 : 0);
+          if (relativeY > this.splitArray.rowLength) {
+            sy -= this.splitArray.rowLength;
+            ey -= this.splitArray.rowLength;
+            continue;
+          }
+
+          for (let x = sx; x <= ex; x++) {
+            this.data[i][x][relativeY].fill =
+              c === 1 ||
+              c === 2 ||
+              c === 3 ?
+              c : 0;
+          }
+
+          break;
+        }
+
+
+        let relativeSY = sy + (this.splitArray.hasHeader ? 1 : 0);
+        if (relativeSY > this.splitArray.rowLength) {
+          sy -= this.splitArray.rowLength;
+          ey -= this.splitArray.rowLength;
+          continue;
+        }
+
+        let relativeEY = ey + (this.splitArray.hasHeader ? 1 : 0);
+        if (relativeEY > this.splitArray.rowLength) {
+          relativeEY = this.splitArray.rowLength;
+        }
+
+        // out of range
+        if (relativeEY < 0) {
+          break;
+        }
+
+        // start at the first index of subarray
+        if (relativeSY < 0) {
+          relativeSY = 0;
+        }
+
+        for (let x = sx; x <= ex; x++) {
+          for (let y = relativeSY; y <= relativeEY; y++) {
+            this.data[i][x][y].fill = c === 1 || c === 2 || c === 3 ? c : 0;
+          }
+        }
+
+        sy -= this.splitArray.rowLength;
+        ey -= this.splitArray.rowLength;
       }
     }
   }
 
   // unfills the given element (used with fill)
   unfill(sx, sy, ex = sx, ey = sy) {
-    for (let x = sx; x <= ex; x++) {
-      for (let y = sy; y <= ey; y++) {
-        this.data[x][y].fill = 0;
+    if (!this.splitArray.doSplit) {
+      for (let x = sx; x <= ex; x++) {
+        for (let y = sy; y <= ey; y++) {
+          this.data[x][y].fill = 0;
+        }
+      }
+    } else {
+      for (let i = 0; i < this.data.length; i++) {
+        if (sy === ey) {
+          let relativeSY = sy + (this.splitArray.hasHeader ? 1 : 0);
+          if (relativeSY > this.splitArray.rowLength) {
+            sy -= this.splitArray.rowLength;
+            continue;
+          }
+
+          for (let x = sx; x <= ex; x++) {
+            this.data[i][x][relativeSY].fill = 0;
+          }
+
+          break;
+        }
+
+
+        let relativeSY = sy + (this.splitArray.hasHeader ? 1 : 0);
+        if (relativeSY > this.splitArray.rowLength) {
+          sy -= this.splitArray.rowLength;
+          ey -= this.splitArray.rowLength;
+          continue;
+        }
+
+        let relativeEY = ey + (this.splitArray.hasHeader ? 1 : 0);
+        if (relativeEY > this.splitArray.rowLength) {
+          relativeEY = this.splitArray.rowLength;
+        }
+
+        // out of range
+        if (relativeEY < 0) {
+          break;
+        }
+
+        // start at the first index of subarray
+        if (relativeSY < 0) {
+          relativeSY = 0;
+        }
+
+        for (let x = sx; x <= ex; x++) {
+          for (let y = relativeSY; y <= relativeEY; y++) {
+            this.data[i][x][y].fill = 0;
+          }
+        }
+
+        sy -= this.splitArray.rowLength;
+        ey -= this.splitArray.rowLength;
       }
     }
   }
@@ -186,6 +291,7 @@ class Array2DTracer extends Tracer {
         if (val.selected) newEl.selected = true;
         if (val.sorted) newEl.sorted = true;
         newEl.variables = val.variables;
+        newEl.fill = val.fill;
         return newEl;
       }
     }
@@ -223,7 +329,7 @@ class Array2DTracer extends Tracer {
         if (idx !== null && idx !== undefined) {
           // check if idx is in subarray
           // add i to account for header offset
-          let relativeIdx = idx + 1;
+          let relativeIdx = idx + (this.splitArray.hasHeader ? 1 : 0);
           if (relativeIdx > 0 && relativeIdx <= this.splitArray.rowLength)
             _newData[row][relativeIdx].variables.push(v);
         }
@@ -317,23 +423,23 @@ class Array2DTracer extends Tracer {
    * @param {*} y the column index.
    * @param {*} newValue the new value.
    */
-  updateValueAt(row, idx, newValue) {
+  updateValueAt(x, y, newValue) {
     if (!this.splitArray.doSplit) {
-      if (!this.data[row] || !this.data[row][idx]) {
+      if (!this.data[x] || !this.data[x][y]) {
         return;
       }
-      this.data[row][idx].value = newValue;
+      this.data[x][y].value = newValue;
     } else {
       for (let i = 0; i < this.data.length; i++) {
-        if (idx !== null || idx !== undefined || idx >= 0) {
-          // check if idx is in subarray
+        if (y !== null || y !== undefined || y >= 0) {
+          // check if y is in subarray
           // add 1 to account for header offset
-          let relativeIdx = idx + 1;
-          if (relativeIdx > 0 && relativeIdx <= this.splitArray.rowLength) {
-            if (!this.data[i][row] || !this.data[i][row][relativeIdx]) continue;
-            this.data[i][row][relativeIdx].value = newValue;
+          let relativeY = y + (this.splitArray.hasHeader ? 1 : 0);
+          if (relativeY > 0 && relativeY <= this.splitArray.rowLength) {
+            if (!this.data[i][x] || !this.data[i][x][relativeY]) continue;
+            this.data[i][x][relativeY].value = newValue;
           }
-          idx -= this.splitArray.rowLength;
+          y -= this.splitArray.rowLength;
         }
       }
     }
@@ -356,7 +462,7 @@ class Array2DTracer extends Tracer {
         if (y !== null || y !== undefined || y >= 0) {
           // check if y is in subarray
           // add 1 to account for header offset
-          let relativeY = y + this.splitArray.hasHeader ? 1 : 0;
+          let relativeY = y + (this.splitArray.hasHeader ? 1 : 0);
           if (relativeY > 0 && relativeY <= this.splitArray.rowLength) {
             if (!this.data[i][x] || !this.data[i][x][relativeY]) continue;
             return this.data[i][x][relativeY].value;
