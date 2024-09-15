@@ -28,7 +28,16 @@ export default {
 
     let table = params.visualisers.array.instance.extractArray(1, EMPTY_CHAR);
 
-    chunker.add('HashSearch(T, k)');
+    const INDEX = 0;
+    const VALUE = 1;
+    const VAR = 2;
+
+    chunker.add(
+      'HashSearch(T, k)',
+      (vis) => {
+        vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
+      }
+    );
     chunker.add('HashSearch(T, k)');
   },
 };
