@@ -1,7 +1,13 @@
 import Array2DTracer from '../../components/DataStructures/Array/Array2DTracer';
 import GraphTracer from '../../components/DataStructures/Graph/GraphTracer';
 import { HashingExp } from '../explanations';
-import { hash1, setIncrement, HASH_TABLE } from './HashingCommon';
+import {
+  hash1,
+  setIncrement,
+  HASH_TABLE,
+  EMPTY_CHAR,
+  Colors
+} from './HashingCommon';
 
 
 const IBookmarks = {
@@ -11,7 +17,7 @@ const IBookmarks = {
   Hash1: 4,
   ChooseIncrement: 5,
   Probing: 6,
-  HandlingCollision: 7,
+  Collision: 7,
   PutIn: 8,
   Done: 9,
 }
@@ -25,80 +31,94 @@ export default {
         order: 0,
       },
       graph: {
-        instance: new GraphTracer('graph', null, 'Hash'),
+        instance: new GraphTracer('graph', null, 'Hashing Functions'),
         order: 1,
       },
     };
   },
 
   run(chunker, params) {
+    const ALGORITHM_NAME = params.name;
     let inputs = params.values;
     let hashValue = params.hashSize;
     let indexArr = Array.from({ length: hashValue }, (_, i) => i);
-    let valueArr = Array(hashValue).fill('-');
+    let valueArr = Array(hashValue).fill(EMPTY_CHAR);
     let nullArr = Array(hashValue).fill('');
+
+    const INDEX = 0;
+    const VALUE = 1;
+    const VAR = 2;
 
     let insertions = 0;
 
     function hashInsert(table, key, prevKey, prevIdx) {
-      if (insertions == table.length -1) {
-        console.log("Table is full"); // fix so it displays on site
-      }
-      else {
-          insertions = insertions + 1;
-          chunker.add(
-            IBookmarks.IncrementInsertions,
-            (vis, key, insertions, prevKey, prevIdx) => {
-              vis.array.showKth(insertions);
+      insertions = insertions + 1;
+      chunker.add(
+        IBookmarks.IncrementInsertions,
+        (vis, key, insertions, prevKey, prevIdx) => {
+          vis.array.showKth(insertions);
+          vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
-              // change variable value
-              vis.array.assignVariable(key, 2, prevIdx, prevKey);
+          // change variable value
+          vis.array.assignVariable(key, VAR, prevIdx, prevKey);
 
-              // update key value
-              vis.graph.updateNode(HASH_TABLE.Key, key);
-              vis.graph.updateNode(HASH_TABLE.Value, ' ');
-            },
-            [key, insertions, prevKey, prevIdx]
-          );
-          // get initial hash index
-          let i = hash1(chunker, IBookmarks.Hash1, key, hashValue);
-          let increment = setIncrement(
-            chunker, IBookmarks.ChooseIncrement, key, hashValue, params.name
-          );
+          // update key value
+          vis.graph.updateNode(HASH_TABLE.Key, key);
+          vis.graph.updateNode(HASH_TABLE.Value, ' ');
 
-          chunker.add(
-            IBookmarks.Probing,
-            (vis, key, idx) => {
-              vis.array.assignVariable(key, 2, idx);
-            },
-            [key, i]
-          )
-          while (typeof table[i] !== 'undefined' && table[i] !== null && table[i] !== key) {
-            i = (i + increment) % table.length;
-            chunker.add(
-              IBookmarks.HandlingCollision,
-            )
-
-            chunker.add(
-              IBookmarks.Probing,
-              (vis, key, idx) => {
-                vis.array.assignVariable(key, 2, idx);
-              },
-              [key, i]
-            )
+          if (ALGORITHM_NAME === "HashingDH") {
+            vis.graph.updateNode(HASH_TABLE.Key2, key);
+            vis.graph.updateNode(HASH_TABLE.Value2, ' ');
           }
+        },
+        [key, insertions, prevKey, prevIdx]
+      );
+      // get initial hash index
+      let i = hash1(chunker, IBookmarks.Hash1, key, hashValue);
+      let increment = setIncrement(
+        chunker, IBookmarks.ChooseIncrement, key, hashValue, params.name
+      );
 
-          table[i] = key;
-          chunker.add(
-            IBookmarks.PutIn,
-            (vis, val, idx) => {
-              vis.array.updateValueAt(1, idx, val);
-            },
-            [key, i]
-          )
+      chunker.add(
+        IBookmarks.Probing,
+        (vis, key, idx) => {
+          vis.array.assignVariable(key, VAR, idx);
+          vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
+        },
+        [key, i]
+      )
+      while (table[i] !== undefined) {
+        let prevI = i;
+        i = (i + increment) % hashValue;
+        chunker.add(
+          IBookmarks.Collision,
+          (vis, idx) => {
+            vis.array.fill(INDEX, idx, undefined, undefined, Colors.Collision);
+          },
+          [prevI]
+        )
 
-          return [key, i];
+        chunker.add(
+          IBookmarks.Probing,
+          (vis, key, idx) => {
+            vis.array.assignVariable(key, VAR, idx);
+            vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
+          },
+          [key, i]
+        )
       }
+
+      table[i] = key;
+      chunker.add(
+        IBookmarks.PutIn,
+        (vis, val, idx) => {
+          vis.array.updateValueAt(VALUE, idx, val);
+          vis.array.fill(INDEX, idx, undefined, undefined, Colors.Insert);
+        },
+        [key, i]
+      )
+
+      return i;
     }
 
     // Init hash table
@@ -107,8 +127,8 @@ export default {
     chunker.add(
       IBookmarks.Init,
       (vis, array) => {
-        vis.array.set(array, 'HashingLP', '', { rowLength: 20, rowHeader: ['Index', 'Value', ''] });
-        vis.array.hideArrayAtIndex([1, 2]);
+        vis.array.set(array, ALGORITHM_NAME, '', { rowLength: 20, rowHeader: ['Index', 'Value', ''] });
+        vis.array.hideArrayAtIndex([VALUE, VAR]);
       },
       [[indexArr, valueArr, nullArr]]
     );
@@ -117,27 +137,41 @@ export default {
       IBookmarks.EmptyArray,
       (vis) => {
         // Show the value row
-        vis.array.hideArrayAtIndex(2);
-
+        vis.array.hideArrayAtIndex(VAR);
+        
         // Init hashing animation
         vis.graph.weighted(true);
-        vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, -7], [5, -7]]);
+        switch (ALGORITHM_NAME) {
+          case "HashingLP" :
+            vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, 0], [5, 0]]);
+            break;
+          case "HashingDH" :
+            vis.graph.set([[0, 'Hash1', 0, 0], [0, 0, 0, 0], [0, 0, 0, 'Hash2'], [0, 0, 0, 0]], [' ', ' ', ' ', ' '], [[-5, 2], [5, 2], [-5, -2], [5, -2]]);
+            break;
+        }
       },
     );
 
-    let prevKey = null;
-    let prevIdx = null;
+    let prevKey;
+    let prevIdx;
     for (const key of inputs) {
-      [prevKey, prevIdx] = hashInsert(table, key, prevKey, prevIdx);
+      prevIdx = hashInsert(table, key, prevKey, prevIdx);
+      prevKey = key;
     }
 
     chunker.add(
       IBookmarks.Done,
       (vis, key) => {
-        vis.array.assignVariable(key, 2, undefined);
+        vis.array.assignVariable(key, VAR, undefined);
+        vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
-       vis.graph.updateNode(HASH_TABLE.Key, ' ');
-       vis.graph.updateNode(HASH_TABLE.Value, ' ');
+        vis.graph.updateNode(HASH_TABLE.Key, ' ');
+        vis.graph.updateNode(HASH_TABLE.Value, ' ');
+        
+        if (ALGORITHM_NAME === 'HashingDH') {
+          vis.graph.updateNode(HASH_TABLE.Key2, ' ');
+          vis.graph.updateNode(HASH_TABLE.Value2, ' ');
+        }
       },
       [prevKey]
     )

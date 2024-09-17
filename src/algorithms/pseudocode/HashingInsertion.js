@@ -102,7 +102,7 @@ let text3 = `
 
         \\Code{
             SetIncrement
-                Increment <- (k * BIGPRIME2) mod SMALLISHPRIME + 1 \\B 10
+                Increment <- (k * BIGPRIME2) mod SMALLISHPRIME + 1 \\B 5
                 \\Expl{Double hashing resolves collisions by hashing the key k a second time to set the increment
                     to find the next empty slot in the table R. The value given by the function must be non-zero
                     and must also be relatively prime to the table size.
@@ -110,5 +110,5 @@ let text3 = `
                 \\Expl}
         \\Code}
 `
-export const doubleHashing = parse(text1 + text3);
-export const linearProbing = parse(text1 + text2);
+export const doubleHashing = parse(text1 + '\n' + text3);
+export const linearProbing = parse(text1 + '\n' + text2);

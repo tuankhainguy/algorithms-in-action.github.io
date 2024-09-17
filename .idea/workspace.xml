@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9f40d145-548f-4701-8a68-ff83c0f7b184" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithms/controllers/HashingInsert.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/controllers/HashingInsert.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithms/controllers/HashingSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/controllers/HashingSearch.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +38,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;josh/hash-updates&quot;
+    &quot;git-widget-placeholder&quot;: &quot;hashing&quot;
   }
 }</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -64,79 +66,7 @@
       <option name="project" value="LOCAL" />
       <updated>1725347405907</updated>
     </task>
-    <task id="LOCAL-00003" summary="Updated the working hash program to make hashDelete use hashSearch, detect how full the table is, and deal with duplicate keys in input for insertion.">
-      <option name="closed" value="true" />
-      <created>1725951281859</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1725951281859</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Replaced 3 and 23 with SMALLPRIME1 and SMALLPRIME2 to remove arbitrary numbers in code">
-      <option name="closed" value="true" />
-      <created>1725952493749</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1725952493749</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Replaced 3 and 23 with SMALLPRIME1 and SMALLPRIME2 to remove arbitrary numbers in code">
-      <option name="closed" value="true" />
-      <created>1725952510810</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1725952510810</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Pseudocode \B added">
-      <option name="closed" value="true" />
-      <created>1726198553862</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1726198553862</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Reverted \\Ref change in HashingInsertion.js">
-      <option name="closed" value="true" />
-      <created>1726198624861</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1726198624861</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Added explanation to Hash1 in HashingInsertion.js pseudocode as well as a potential solution for the collision handling pseudocode without resorting to two separate pseudocode files.">
-      <option name="closed" value="true" />
-      <created>1726200578947</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1726200578947</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Turned Pseudocode output to variables so that it shows a different collision handling pseudocode for linear probing and double hashing">
-      <option name="closed" value="true" />
-      <created>1726204847504</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1726204847504</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Updated some of the pseudocode explanations to match what client wrote.">
-      <option name="closed" value="true" />
-      <created>1726207035926</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1726207035926</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Updated hashsearch pseudocode so that it's compliant with client specifications. Missing bookmarks so that ti pairs with animation.">
-      <option name="closed" value="true" />
-      <created>1726207478871</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1726207478871</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,15 +89,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updating functions" />
     <MESSAGE value="Generalised code so that it works for big and small hashes" />
-    <MESSAGE value="Updated the working hash program to make hashDelete use hashSearch, detect how full the table is, and deal with duplicate keys in input for insertion." />
-    <MESSAGE value="Replaced 3 and 23 with SMALLPRIME1 and SMALLPRIME2 to remove arbitrary numbers in code" />
-    <MESSAGE value="Pseudocode \B added" />
-    <MESSAGE value="Reverted \\Ref change in HashingInsertion.js" />
-    <MESSAGE value="Added explanation to Hash1 in HashingInsertion.js pseudocode as well as a potential solution for the collision handling pseudocode without resorting to two separate pseudocode files." />
-    <MESSAGE value="At" />
-    <MESSAGE value="Turned Pseudocode output to variables so that it shows a different collision handling pseudocode for linear probing and double hashing" />
-    <MESSAGE value="Updated some of the pseudocode explanations to match what client wrote." />
-    <MESSAGE value="Updated hashsearch pseudocode so that it's compliant with client specifications. Missing bookmarks so that ti pairs with animation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated hashsearch pseudocode so that it's compliant with client specifications. Missing bookmarks so that ti pairs with animation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Generalised code so that it works for big and small hashes" />
   </component>
 </project>
