@@ -47,6 +47,7 @@ export default {
     const INDEX = 0;
     const VALUE = 1;
     const VAR = 2;
+    const BIG = 97;
 
     let insertions = 0;
 
@@ -121,7 +122,16 @@ export default {
     chunker.add(
       IBookmarks.Init,
       (vis, array) => {
-        vis.array.set(array, params.name, '', { rowLength: 20, rowHeader: ['Index', 'Value', ''] });
+        // increase Array2D visualizer render space
+        if (hashValue >= BIG) {
+          vis.array.setSize(2);
+        }
+
+        vis.array.set(array,
+          params.name,
+          '',
+          { rowLength: 15, rowHeader: ['Index', 'Value', ''] }
+        );
         vis.array.hideArrayAtIndex([VALUE, VAR]);
       },
       [[indexArr, valueArr, nullArr]]
