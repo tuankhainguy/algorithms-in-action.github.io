@@ -26,6 +26,7 @@ import Renderer from '../../common/Renderer/index';
 import styles from './Array2DRenderer.module.scss';
 import { classes } from '../../common/util';
 import { mode } from '../../../top/Settings';
+import PropTypes from 'prop-types';
 
 let modename;
 export function switchmode(modetype = mode()) {
@@ -46,26 +47,41 @@ const useScroll = () => {
   const elRef = useRef(null);
   const executeScroll = () => elRef.current.scrollIntoView({
     behavior: 'smooth',
-    block: 'center',
+    block: 'start',
   });
 
   return [executeScroll, elRef];
 };
 
-const ScrollToVariable = (v) => {
+const ScrollToHighlight = ({col, j, toString}) => {
   const [executeScroll, elRef] = useScroll();
   useEffect(executeScroll, []);
 
   return (
-    <motion.p
-      layoutId={v.value}
-      key={v.value}
-      className={styles.variable}
+    <td
+      className={classes(
+        styles.col,
+        col.selected && styles.selected,
+        col.patched && styles.patched,
+        col.sorted && styles.sorted,
+        col.selected1 && styles.selected1,
+        col.selected2 && styles.selected2,
+        col.selected3 && styles.selected3,
+        styles.variableOrange,
+      )}
+      key={j}
       ref={elRef}
     >
-      {v.value}
-    </motion.p>
+      <span className={styles.value}>
+        {toString(col.value)}
+      </span>
+    </td>
   );
+}
+
+ScrollToHighlight.propTypes = {
+  col: PropTypes.object.isRequired,
+  j: PropTypes.number.isRequired,
 }
 
 class Array2DRenderer extends Renderer {
@@ -103,7 +119,7 @@ class Array2DRenderer extends Renderer {
     // const isArray1D = this instanceof Array1DRenderer;
 
     // XXX sometimes caption (listOfNumbers) is longer than any row...
-    function createArray(data, toString, longestRow, elRef) {
+    function createArray(data, toString, longestRow, currentSub, subArrayNum) {
       return (
         <tbody>
         {algo === 'unionFind' && ( // adding the array indicies for union find
@@ -140,7 +156,14 @@ class Array2DRenderer extends Renderer {
           </AnimateSharedLayout>
         )}
 
-        <tr className={styles.row}>
+        <tr className={styles.row}
+          style={{
+            height: (
+              subArrayNum > 1 &&
+              (algo === 'HashingLP' || algo === 'HashingDH')
+            ) ? 2 : styles.row.height
+          }}
+        >
           {!isArray1D && <td className={classes(styles.col, styles.index)} />}
           {algo === 'tc' && ( // Leave a blank cell at the header row
             <td />
@@ -154,14 +177,27 @@ class Array2DRenderer extends Renderer {
             algo !== 'aStar' &&
             algo !== 'aStar' &&
             algo !== 'msort_lista_td' &&
-            algo !== 'HashingLP' &&
-            algo !== 'HashingDH' &&
             longestRow.map((_, i) => {
               if (algo === 'tc') {
                 i += 1;
               }
               if (algo === 'prim' || algo == 'unionFind') {
                 return <React.Fragment key={i} />;
+              }
+              if (algo === 'HashingLP' || algo === 'HashingDH') {
+                if (currentSub === 0) {
+                  return;
+                }
+                return (
+                  <th
+                    className={styles.col}
+                    style={{
+                      backgroundColor: 'var(--array-2d-row-col-border)'
+                    }}
+                  >
+                    <span />
+                  </th>
+                )
               }
               return (
                 <th className={classes(styles.col, styles.index)} key={i}>
@@ -201,6 +237,12 @@ class Array2DRenderer extends Renderer {
                 const varGreen = col.fill === 1; // for simple fill
                 const varOrange = col.fill === 2;
                 const varRed = col.fill === 3;
+
+                if (varOrange) {
+                  return (
+                    <ScrollToHighlight col={col} j={j} toString={toString} />
+                  );
+                }
 
                 return (
                   <td
@@ -298,9 +340,13 @@ class Array2DRenderer extends Renderer {
                       key={j}
                     >
                       {col.variables.map((v) => (
-                        <ScrollToVariable
-                          value={v}
-                        />
+                        <motion.p
+                          layoutId={v}
+                          key={v}
+                          className={styles.variable}
+                        >
+                          {v}
+                        </motion.p>
                       ))}
                     </td>
                   ))}
@@ -384,12 +430,18 @@ class Array2DRenderer extends Renderer {
       return createRender(render);
 
     } else {
-      for (const arr of data) {
-        let longestRow = arr.reduce(
+      for (let i = 0; i < data.length; i++) {
+        let longestRow = data[i].reduce(
           (longestRow, row) => (longestRow.length < row.length ? row : longestRow),
           []
         );
-        render.push(createArray(arr, this.toString, longestRow));
+        render.push(createArray(
+          data[i],
+          this.toString,
+          longestRow,
+          i,
+          data.length
+        ));
       }
 
       return (
@@ -414,9 +466,13 @@ class Array2DRenderer extends Renderer {
                 <span
                   className={styles.captionHashing}
                 >
-                  Insertions: {Array.isArray(kth) ? kth[0] : kth}
-                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                  Increment: {Array.isArray(kth) ? kth[1] : ''}
+                  Key: {kth.key}
+                  &emsp;&emsp;&emsp;&emsp;
+                  {kth.insertions !== undefined && (
+                    `Insertions: ${kth.insertions}`
+                  )}
+                  &emsp;&emsp;&emsp;&emsp;
+                  Increment: {kth.increment}
                 </span>
               )
             }

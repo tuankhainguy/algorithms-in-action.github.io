@@ -65,7 +65,15 @@ class Array2DTracer extends Tracer {
         for (let i = 0; i < array2d.length; i++ ) {
           arr2d.push([
             splitArray.rowHeader[i],
-            ...array2d[i].slice(step, step + splitArray.rowLength)
+            ...array2d[i].slice(step, step + splitArray.rowLength),
+            ...(
+              (
+                (array2d[0].length - step) > 0 &&
+                (array2d[0].length - step) < splitArray.rowLength
+              )
+              ? Array(step + splitArray.rowLength - array2d[0].length)
+              : Array(0)
+            )
           ]);
         }
 

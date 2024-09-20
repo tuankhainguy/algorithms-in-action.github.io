@@ -47,6 +47,7 @@ export default {
     const INDEX = 0;
     const VALUE = 1;
     const VAR = 2;
+    const SMALL = 11;
     const BIG = 97;
 
     let insertions = 0;
@@ -56,11 +57,13 @@ export default {
       chunker.add(
         IBookmarks.IncrementInsertions,
         (vis, key, insertions, prevKey, prevIdx) => {
-          vis.array.showKth(insertions);
+          vis.array.showKth({key: key, insertions: insertions});
           vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
           // change variable value
-          vis.array.assignVariable(key, VAR, prevIdx, prevKey);
+          if (hashValue === SMALL) {
+            vis.array.assignVariable(key, VAR, prevIdx, prevKey)
+          }
 
           // update key value
           vis.graph.updateNode(HASH_TABLE.Key, key);
@@ -77,7 +80,9 @@ export default {
       chunker.add(
         IBookmarks.Probing,
         (vis, key, idx) => {
-          vis.array.assignVariable(key, VAR, idx);
+          if (hashValue === SMALL) {
+            vis.array.assignVariable(key, VAR, idx);
+          }
           vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
         },
         [key, i]
@@ -96,7 +101,9 @@ export default {
         chunker.add(
           IBookmarks.Probing,
           (vis, key, idx) => {
-            vis.array.assignVariable(key, VAR, idx);
+            if (hashValue === SMALL) {
+              vis.array.assignVariable(key, VAR, idx);
+            }
             vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
           },
           [key, i]
@@ -124,17 +131,23 @@ export default {
       (vis, array) => {
         // increase Array2D visualizer render space
         if (hashValue >= BIG) {
-          vis.array.setSize(2);
+          vis.array.setSize(3);
         }
 
         vis.array.set(array,
           params.name,
           '',
-          { rowLength: 15, rowHeader: ['Index', 'Value', ''] }
+          {
+            rowLength: hashValue === BIG ? 15 : SMALL,
+            rowHeader: ['Index', 'Value', '']
+          }
         );
         vis.array.hideArrayAtIndex([VALUE, VAR]);
       },
-      [[indexArr, valueArr, nullArr]]
+      [hashValue === SMALL ?
+        [indexArr, valueArr, nullArr] :
+        [indexArr, valueArr]
+      ]
     );
 
     chunker.add(
@@ -159,7 +172,9 @@ export default {
     chunker.add(
       IBookmarks.Done,
       (vis, key) => {
-        vis.array.assignVariable(key, VAR, undefined);
+        if (hashValue === SMALL) {
+          vis.array.assignVariable(key, VAR, undefined);
+        }
         vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
         vis.graph.updateNode(HASH_TABLE.Key, ' ');

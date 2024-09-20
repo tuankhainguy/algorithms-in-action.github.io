@@ -55,8 +55,12 @@ export function setIncrement(
   chunker.add(
     bookmark,
     (vis, increment) => {
-      let insertions = vis.array.getKth();
-      vis.array.showKth([insertions, increment]);
+      let kth = vis.array.getKth();
+      vis.array.showKth({
+        key: key,
+        insertions: kth.insertions,
+        increment: increment
+      });
     },
     [increment]
   )
