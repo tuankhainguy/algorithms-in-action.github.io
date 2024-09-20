@@ -55,6 +55,7 @@ export default {
     const VAR = 2;
     const SMALL = 11;
     const BIG = 97;
+    const SPLIT_SIZE = 17;
 
     let insertions = 0;
 
@@ -149,7 +150,7 @@ export default {
           params.name,
           '',
           {
-            rowLength: hashValue === BIG ? 15 : SMALL,
+            rowLength: hashValue === BIG ? SPLIT_SIZE : SMALL,
             rowHeader: ['Index', 'Value', '']
           }
         );

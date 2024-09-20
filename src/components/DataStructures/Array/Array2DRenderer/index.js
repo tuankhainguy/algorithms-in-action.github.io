@@ -161,7 +161,7 @@ class Array2DRenderer extends Renderer {
             height: (
               subArrayNum > 1 &&
               (algo === 'HashingLP' || algo === 'HashingDH')
-            ) ? 2 : styles.row.height
+            ) ? 5 : styles.row.height
           }}
         >
           {!isArray1D && <td className={classes(styles.col, styles.index)} />}
@@ -177,6 +177,8 @@ class Array2DRenderer extends Renderer {
             algo !== 'aStar' &&
             algo !== 'aStar' &&
             algo !== 'msort_lista_td' &&
+            algo !== 'HashingLP' &&
+            algo !== 'HashingDH' &&
             longestRow.map((_, i) => {
               if (algo === 'tc') {
                 i += 1;
@@ -184,21 +186,21 @@ class Array2DRenderer extends Renderer {
               if (algo === 'prim' || algo == 'unionFind') {
                 return <React.Fragment key={i} />;
               }
-              if (algo === 'HashingLP' || algo === 'HashingDH') {
-                if (currentSub === 0) {
-                  return;
-                }
-                return (
-                  <th
-                    className={styles.col}
-                    style={{
-                      backgroundColor: 'var(--array-2d-row-col-border)'
-                    }}
-                  >
-                    <span />
-                  </th>
-                )
-              }
+              // if (algo === 'HashingLP' || algo === 'HashingDH') {
+              //   if (currentSub === 0) {
+              //     return;
+              //   }
+              //   return (
+              //     <th
+              //       className={styles.col}
+              //       style={{
+              //         backgroundColor: 'var(--array-2d-row-col-border)'
+              //       }}
+              //     >
+              //       <span />
+              //     </th>
+              //   )
+              // }
               return (
                 <th className={classes(styles.col, styles.index)} key={i}>
                   <span className={styles.value}>{i}</span>
