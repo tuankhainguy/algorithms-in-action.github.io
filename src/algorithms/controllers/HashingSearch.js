@@ -13,11 +13,11 @@ const MAX_PARAMS_SIZE = 100;
 //TEMP
 const IBookmarks = {
   Init: 1,
-  ApplyHash: 2,
-  ChooseIncrement: 3,
-  WhileNot: 4,
-  Increment: 5,
-  CheckValue: 6,
+  ApplyHash: 5,
+  ChooseIncrement: 6,
+  WhileNot: 2,
+  Increment: 3,
+  CheckValue: 4,
   Found: 7,
   NotFound: 8,
 }
@@ -56,6 +56,8 @@ export default {
       (vis, target) => {
 
         vis.array.showKth({key: target});
+        vis.array.unfill(INDEX, 0, undefined, SIZE - 1);
+        vis.array.resetVariable(POINTER);
 
         vis.graph.updateNode(HASH_TABLE.Key, target);
         vis.graph.updateNode(HASH_TABLE.Value, ' ');

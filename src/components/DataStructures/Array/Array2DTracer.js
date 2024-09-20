@@ -351,6 +351,48 @@ class Array2DTracer extends Tracer {
     }
   }
 
+  resetVariable(row) {
+    // deep clone data so that changes to this.data are all made at the same time which will allow for tweening
+    // eslint-disable-next-line consistent-return
+    function customizer(val) {
+      if (val instanceof Element) {
+        const newEl = new Element(val.value, val.key);
+        if (val.patched) newEl.patched = true;
+        if (val.selected) newEl.selected = true;
+        if (val.sorted) newEl.sorted = true;
+        newEl.variables = val.variables;
+        newEl.fill = val.fill;
+        return newEl;
+      }
+    }
+
+    if (!this.splitArray.doSplit) {
+      const newData = cloneDeepWith(this.data, customizer);
+
+      // remove all current occurences of the variable
+      for (let y = 0; y < newData[row].length; y++) {
+        newData[row][y].variables = []
+      }
+
+      this.data = newData;
+    } else {
+      let newData = [];
+      for (let i = 0; i < this.data.length; i++) {
+        let _newData = cloneDeepWith(this.data[i], customizer);
+
+        // remove all current occurences of the variable
+        for (let y = 0; y < _newData[row].length; y++) {
+          _newData[row][y].variables = [];
+        }
+
+        newData.push(_newData);
+      }
+
+      // update this.data
+      this.data = newData;
+    }
+  }
+
   /**
    * Whether to use animation. Could be used to immediately update the state.
    * For instance, where there are two 'distinct' operation and the sliding motion complicates.

@@ -48,6 +48,7 @@ export default {
     let indexArr = Array.from({ length: hashValue }, (_, i) => i);
     let valueArr = Array(hashValue).fill(EMPTY_CHAR);
     let nullArr = Array(hashValue).fill('');
+    let table_result;
 
     const INDEX = 0;
     const VALUE = 1;
@@ -209,8 +210,11 @@ export default {
           vis.graph.updateNode(HASH_TABLE.Key2, ' ');
           vis.graph.updateNode(HASH_TABLE.Value2, ' ');
         }
+        table_result = vis.array.extractArray([1], "x")
       },
       [prevKey]
     )
+
+    return table_result;
   },
 };

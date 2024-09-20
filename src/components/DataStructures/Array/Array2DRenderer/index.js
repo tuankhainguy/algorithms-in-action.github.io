@@ -467,9 +467,13 @@ class Array2DRenderer extends Renderer {
                   className={styles.captionHashing}
                 >
                   Key: {kth.key}
-                  &emsp;&emsp;&emsp;&emsp;
                   {kth.insertions !== undefined && (
-                    `Insertions: ${kth.insertions}`
+                    <span
+                      className={styles.captionHashing}
+                    >
+                      &emsp;&emsp;&emsp;&emsp;
+                      Insertions: {kth.insertions}
+                    </span>
                   )}
                   &emsp;&emsp;&emsp;&emsp;
                   Increment: {kth.increment}
