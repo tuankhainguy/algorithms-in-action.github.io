@@ -1,3 +1,4 @@
+import { array } from 'prop-types';
 import Array2DTracer from '../../components/DataStructures/Array/Array2DTracer';
 import GraphTracer from '../../components/DataStructures/Graph/GraphTracer';
 import { HashingExp } from '../explanations';
@@ -13,14 +14,17 @@ import {
 const IBookmarks = {
   Init: 1,
   EmptyArray: 2,
-  IncrementInsertions: 3,
-  Hash1: 4,
-  ChooseIncrement: 5,
-  Probing: 6,
-  Collision: 7,
-  PutIn: 8,
-  Done: 9,
+  InitInsertion: 3,
+  IncrementInsertions: 4,
+  Hash1: 5,
+  ChooseIncrement: 6,
+  Probing: 7,
+  Collision: 8,
+  PutIn: 9,
+  Done: 10,
 }
+
+const TYPE = 'Insert';
 
 export default {
   explanation: HashingExp,
@@ -31,13 +35,14 @@ export default {
         order: 0,
       },
       graph: {
-        instance: new GraphTracer('graph', null, 'Hash'),
+        instance: new GraphTracer('graph', null, 'Hashing Functions'),
         order: 1,
       },
     };
   },
 
   run(chunker, params) {
+    const ALGORITHM_NAME = params.name;
     let inputs = params.values;
     let hashValue = params.hashSize;
     let indexArr = Array.from({ length: hashValue }, (_, i) => i);
@@ -68,13 +73,18 @@ export default {
           // update key value
           vis.graph.updateNode(HASH_TABLE.Key, key);
           vis.graph.updateNode(HASH_TABLE.Value, ' ');
+
+          if (ALGORITHM_NAME === "HashingDH") {
+            vis.graph.updateNode(HASH_TABLE.Key2, key);
+            vis.graph.updateNode(HASH_TABLE.Value2, ' ');
+          }
         },
         [key, insertions, prevKey, prevIdx]
       );
       // get initial hash index
       let i = hash1(chunker, IBookmarks.Hash1, key, hashValue);
       let increment = setIncrement(
-        chunker, IBookmarks.ChooseIncrement, key, hashValue, params.name
+        chunker, IBookmarks.ChooseIncrement, key, hashValue, ALGORITHM_NAME, TYPE
       );
 
       chunker.add(
@@ -143,6 +153,19 @@ export default {
           }
         );
         vis.array.hideArrayAtIndex([VALUE, VAR]);
+
+        vis.graph.weighted(true);
+        switch (ALGORITHM_NAME) {
+          case "HashingLP" :
+            vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, 0], [5, 0]]);
+            break;
+          case "HashingDH" :
+            vis.graph.set([
+              [0, 'Hash1', 0, 0], [0, 0, 0, 0], [0, 0, 0, 'Hash2'], [0, 0, 0, 0]],
+              [' ', ' ', ' ', ' '],
+              [[-5, 2], [5, 2], [-5, -2], [5, -2]]);
+            break;
+        }
       },
       [hashValue === SMALL ?
         [indexArr, valueArr, nullArr] :
@@ -155,12 +178,15 @@ export default {
       (vis) => {
         // Show the value row
         vis.array.hideArrayAtIndex(VAR);
-
-        // Init hashing animation
-        vis.graph.weighted(true);
-        vis.graph.set([[0, 'Hash'], [0, 0]], [' ', ' '], [[-5, 0], [5, 0]]);
       },
     );
+
+    chunker.add(
+      IBookmarks.InitInsertion,
+      (vis) => {
+        vis.array.showKth([0, ""]);
+      }
+    )
 
     let prevKey;
     let prevIdx;
@@ -179,6 +205,10 @@ export default {
 
         vis.graph.updateNode(HASH_TABLE.Key, ' ');
         vis.graph.updateNode(HASH_TABLE.Value, ' ');
+        if (ALGORITHM_NAME === 'HashingDH') {
+          vis.graph.updateNode(HASH_TABLE.Key2, ' ');
+          vis.graph.updateNode(HASH_TABLE.Value2, ' ');
+        }
       },
       [prevKey]
     )
