@@ -22,12 +22,29 @@ import * as Instructions from './instructions';
  src/context/actions.js had better be deployed!
  XXX Design of noDeploy stuff was done with the aim of minimal code change
  and could be re-thought when there are fewer merges going on.
+ XXX we could export and use allalgs in key places in the system,
+ eg src/context/actions.js so we can still access them via the URL, but
+ not have them appear in the index.
 
  Each imported algorithm is expected to be an object of the form:
  { pseudocode: String, explanation: String, run: Function }
  */
 
-// Very Important: The key for the algorithms must be unique!
+// Very Important: The key for each algorithm MUST be unique!
+// Also: the key for the algorithm MUST be the same as the "name"
+// of the top level Param block returned by the parameter function.
+// Eg, parameters/msort_arr_td.js has
+//
+// function MergesortParam() {
+// ...
+// return (
+//     // <>
+//       <div className="form">
+//         <ListParam
+//           name="msort_arr_td"  <---- ****SAME AS KEY****
+// ...
+// export default MergesortParam
+
 const allalgs = {
 
   'heapSort': {
@@ -74,6 +91,7 @@ const allalgs = {
   },
   'msort_arr_td': {
     name: 'Merge Sort',
+    noDeploy: false,
     category: 'Sort',
     explanation: Explanation.msort_arr_td,
     param: <Param.msort_arr_td />,
@@ -84,6 +102,20 @@ const allalgs = {
     },
     controller: {
       sort: Controller.msort_arr_td,
+    },
+  },
+  'msort_lista_td': {
+    name: 'Merge Sort (lists)',
+    category: 'Sort',
+    explanation: Explanation.msort_lista_td,
+    param: <Param.msort_lista_td />,
+    instructions: Instructions.msort_lista_td,
+    extraInfo: ExtraInfo.msort_lista_td,
+    pseudocode: {
+      sort: Pseudocode.msort_lista_td,
+    },
+    controller: {
+      sort: Controller.msort_lista_td,
     },
   },
 
@@ -121,6 +153,40 @@ const allalgs = {
     },
   },
 
+  'HashingLP': {
+    name: 'Hashing (Linear probing)',
+    category: 'Insert/Search',
+    param: <Param.HashingLPParam/>,
+    instructions: Instructions.HashingInstruction,
+    explanation: Explanation.HashingExp,
+    extraInfo: ExtraInfo.HashingInfoLP,
+    pseudocode: {
+      insertion: Pseudocode.linearProbing,
+      search: Pseudocode.linearSearch,
+    },
+    controller: {
+      insertion: Controller.HashingInsertion,
+      search: Controller.HashingSearch,
+    },
+  },
+
+  'HashingDH': {
+    name: 'Hashing (Double hashing)',
+    category: 'Insert/Search',
+    param: <Param.HashingDHParam/>,
+    instructions: Instructions.HashingInstruction,
+    explanation: Explanation.HashingExp,
+    extraInfo: ExtraInfo.HashingInfoDH,
+    pseudocode: {
+      insertion: Pseudocode.doubleHashing,
+      search: Pseudocode.doubleSearch,
+    },
+    controller: {
+      insertion: Controller.HashingInsertion,
+      search: Controller.HashingSearch,
+    },
+  },
+
   'DFSrec': {
     name: 'Depth First Search',
     category: 'Graph',
@@ -150,7 +216,7 @@ const allalgs = {
     },
   },
   'BFS': {
-    
+
     name: 'Breadth First Search',
     category: 'Graph',
     param: <Param.BFSParam/>,
@@ -178,7 +244,7 @@ const allalgs = {
       find: Controller.dijkstra,
 
     },
-  }, 
+  },
    'aStar': {
     name: 'A* (heuristic search)',
     category: 'Graph',
@@ -193,7 +259,7 @@ const allalgs = {
       find: Controller.AStar,
 
     },
-  }, 
+  },
   'prim': {
     noDeploy: false,
     name: 'Prim\'s (min. spanning tree)',
