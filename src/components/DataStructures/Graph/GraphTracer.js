@@ -112,7 +112,6 @@ class GraphTracer extends Tracer {
    * @param {array} array2d 2D array of nodes
    */
   set(array2d = [], values = [], coordinates = []) {
-    this.scaledCoords = coordinates;
     this.setNodeRadius(coordinates);
 
     // Set layout to null if nodes are to be displayed by coordinates.
@@ -131,7 +130,6 @@ class GraphTracer extends Tracer {
       else
       {
         // Do not change this value unless you also change axis scales
-        // and also check handleMouseMove
         const scaleSize = 30;
         const x = coordinates[i][0] * scaleSize;
         const y = -coordinates[i][1] * scaleSize;
@@ -273,10 +271,6 @@ class GraphTracer extends Tracer {
 
   weighted(isWeighted = true) {
     this.isWeighted = isWeighted;
-  }
-
-  moveNodeFn(moveNode) {
-    this.moveNode = moveNode;
   }
 
   addNode(id, value = undefined, shape = 'circle', color = 'blue', weight = null,
