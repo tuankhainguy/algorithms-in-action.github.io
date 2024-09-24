@@ -418,25 +418,6 @@ function EuclideanMatrixParams({
     setCoordsTxt(getCoordinateList(newData1));
   };
 
-  // set up a function to call if node is moved with mouse (see
-  // components/DataStructures/Graph/GraphRenderer/index.js) so
-  // coordinates here can be updated
-  const moveNode = (nodeID, x, y) => {
-    console.log(['moveNode', nodeID, x, y]);
-    const newData1 = data1.map((row, index) => {
-      if (index === nodeID) {
-        return {
-          ...data1[nodeID],
-          ['col0']: x.toString(),
-          ['col1']: y.toString(),
-        };
-      }
-      return row;
-    });
-    setData1(newData1);
-    setCoordsTxt(getCoordinateList(newData1));
-  }
-
   // When cell renderer calls updateData2, we'll use
   // the rowIndex, columnId and new value to update the
   // original data + symmetric cell if flag set
@@ -596,8 +577,7 @@ function EuclideanMatrixParams({
         endNodes,
         heuristicFn,
         coordsMatrix,
-        edgeValueMatrix,
-        moveNode
+        edgeValueMatrix
       });
     //   setButtonMessage('Reset');
     } else {
