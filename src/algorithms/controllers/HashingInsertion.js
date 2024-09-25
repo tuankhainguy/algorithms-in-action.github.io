@@ -62,11 +62,11 @@ export default {
 
     let insertions = 0;
 
-    function hashInsert(table, key, prevKey, prevIdx) {
+    function hashInsert(table, key, prevIdx) {
       insertions = insertions + 1;
       chunker.add(
         IBookmarks.IncrementInsertions,
-        (vis, key, insertions, prevKey, prevIdx) => {
+        (vis, key, insertions, prevIdx) => {
           vis.array.showKth({key: key, insertions: insertions});
           vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
@@ -98,7 +98,7 @@ export default {
 
       chunker.add(
         IBookmarks.Probing,
-        (vis, key, idx) => {
+        (vis, idx) => {
           if (hashValue === SMALL) {
             vis.array.assignVariable(POINTER_VALUE, POINTER, idx);
           }
@@ -127,7 +127,7 @@ export default {
 
         chunker.add(
           IBookmarks.Probing,
-          (vis, key, idx) => {
+          (vis, idx) => {
             if (hashValue === SMALL) {
               vis.array.assignVariable(POINTER_VALUE, POINTER, idx);
             }
@@ -169,7 +169,7 @@ export default {
             rowHeader: ['Index', 'Value', '']
           }
         );
-        vis.array.hideArrayAtIndex([VALUE, VAR]);
+        vis.array.hideArrayAtIndex([VALUE, POINTER]);
 
         vis.graph.weighted(true);
         switch (ALGORITHM_NAME) {
@@ -194,7 +194,7 @@ export default {
       IBookmarks.EmptyArray,
       (vis) => {
         // Show the value row
-        vis.array.hideArrayAtIndex(VAR);
+        vis.array.hideArrayAtIndex(POINTER);
       },
     );
 
@@ -205,18 +205,16 @@ export default {
       }
     )
 
-    let prevKey;
     let prevIdx;
     for (const item of inputs) {
       for (const key of returnInputFromRange(item)) {
-        prevIdx = hashInsert(table, key, prevKey, prevIdx);
-        prevKey = key;
+        prevIdx = hashInsert(table, key, prevIdx);
       }
     }
 
     chunker.add(
       IBookmarks.Done,
-      (vis, key) => {
+      (vis) => {
         if (hashValue === SMALL) {
           vis.array.assignVariable(POINTER_VALUE, POINTER, undefined);
         }
