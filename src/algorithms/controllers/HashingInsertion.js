@@ -9,6 +9,7 @@ import {
   EMPTY_CHAR,
   Colors
 } from './HashingCommon';
+import { returnInputFromRange } from '../parameters/helpers/ParamHelper.js';
 
 
 const IBookmarks = {
@@ -22,6 +23,7 @@ const IBookmarks = {
   Collision: 8,
   PutIn: 9,
   Done: 10,
+  BulkInsert: 11
 }
 
 const TYPE = 'Insert';
@@ -52,7 +54,8 @@ export default {
 
     const INDEX = 0;
     const VALUE = 1;
-    const VAR = 2;
+    const POINTER = 2;
+    const POINTER_VALUE = "i"
     const SMALL = 11;
     const BIG = 97;
     const SPLIT_SIZE = 17;
@@ -69,19 +72,23 @@ export default {
 
           // change variable value
           if (hashValue === SMALL) {
-            vis.array.assignVariable(key, VAR, prevIdx, prevKey)
+            vis.array.assignVariable("", POINTER, prevIdx, POINTER_VALUE);
           }
 
           // update key value
           vis.graph.updateNode(HASH_TABLE.Key, key);
           vis.graph.updateNode(HASH_TABLE.Value, ' ');
+          vis.graph.select(HASH_TABLE.Key);
+          vis.graph.colorEdge(HASH_TABLE.Key, HASH_TABLE.Value, Colors.Pending)
 
           if (ALGORITHM_NAME === "HashingDH") {
             vis.graph.updateNode(HASH_TABLE.Key2, key);
             vis.graph.updateNode(HASH_TABLE.Value2, ' ');
+            vis.graph.select(HASH_TABLE.Key2);
+            vis.graph.colorEdge(HASH_TABLE.Key2, HASH_TABLE.Value2, Colors.Pending)
           }
         },
-        [key, insertions, prevKey, prevIdx]
+        [insertions, prevIdx]
       );
       // get initial hash index
       let i = hash1(chunker, IBookmarks.Hash1, key, hashValue);
@@ -93,11 +100,19 @@ export default {
         IBookmarks.Probing,
         (vis, key, idx) => {
           if (hashValue === SMALL) {
-            vis.array.assignVariable(key, VAR, idx);
+            vis.array.assignVariable(POINTER_VALUE, POINTER, idx);
           }
           vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
+          vis.graph.deselect(HASH_TABLE.Key);
+          vis.graph.deselect(HASH_TABLE.Value);
+          vis.graph.removeEdgeColor(HASH_TABLE.Key, HASH_TABLE.Value);
+          if (ALGORITHM_NAME == "HashingDH") {
+            vis.graph.deselect(HASH_TABLE.Key2);
+            vis.graph.deselect(HASH_TABLE.Value2);
+            vis.graph.removeEdgeColor(HASH_TABLE.Key2, HASH_TABLE.Value2);
+          }
         },
-        [key, i]
+        [i]
       )
       while (table[i] !== undefined && table[i] !== key) {
         let prevI = i;
@@ -114,11 +129,11 @@ export default {
           IBookmarks.Probing,
           (vis, key, idx) => {
             if (hashValue === SMALL) {
-              vis.array.assignVariable(key, VAR, idx);
+              vis.array.assignVariable(POINTER_VALUE, POINTER, idx);
             }
             vis.array.fill(INDEX, idx, undefined, undefined, Colors.Pending);
           },
-          [key, i]
+          [i]
         )
       }
 
@@ -192,16 +207,18 @@ export default {
 
     let prevKey;
     let prevIdx;
-    for (const key of inputs) {
-      prevIdx = hashInsert(table, key, prevKey, prevIdx);
-      prevKey = key;
+    for (const item of inputs) {
+      for (const key of returnInputFromRange(item)) {
+        prevIdx = hashInsert(table, key, prevKey, prevIdx);
+        prevKey = key;
+      }
     }
 
     chunker.add(
       IBookmarks.Done,
       (vis, key) => {
         if (hashValue === SMALL) {
-          vis.array.assignVariable(key, VAR, undefined);
+          vis.array.assignVariable(POINTER_VALUE, POINTER, undefined);
         }
         vis.array.unfill(INDEX, 0, undefined, hashValue - 1);
 
@@ -213,7 +230,6 @@ export default {
         }
         table_result = vis.array.extractArray([1], "x")
       },
-      [prevKey]
     )
 
     return table_result;

@@ -23,7 +23,7 @@ const main = `
 
             //=======================================================
 
-            HashInsert(T, k)  // Insert key k into table T
+            HashInsert(T, k)  // Insert key k into table T \\B 11
                 \\In{
                     Check how full the table is
                     \\Expl{ One empty slot must always be maintained, to prevent to potential for infinite looping.

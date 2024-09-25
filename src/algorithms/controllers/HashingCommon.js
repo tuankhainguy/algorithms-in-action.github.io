@@ -29,6 +29,7 @@ export function hash1(chunker, bookmark, key, tableSize) {
     bookmark,
     (vis, val) => {
       vis.graph.updateNode(HASH_TABLE.Value, val);
+      vis.graph.select(HASH_TABLE.Value);
     },
     [hashed]
   )
@@ -42,6 +43,7 @@ export function hash2(chunker, bookmark, key, tableSize) {
     bookmark,
     (vis, val) => {
       vis.graph.updateNode(HASH_TABLE.Value2, val);
+      vis.graph.select(HASH_TABLE.Value2);
     },
     [hashed]
   )
@@ -61,6 +63,7 @@ export function setIncrement(
       increment = hash2(chunker, bookmark, key, tableSize);
       break;
   }
+
   if (type == "Insert") {
     chunker.add(
       bookmark,
