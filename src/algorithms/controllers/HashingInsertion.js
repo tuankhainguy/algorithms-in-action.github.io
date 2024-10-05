@@ -276,6 +276,7 @@ export default {
         // Increase Array2D visualizer render space
         if (SIZE >= LARGE_SIZE) {
           vis.array.setSize(3);
+          vis.array.setInitialZoom(0.75);
         }
 
         // Initialize the array

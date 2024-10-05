@@ -70,6 +70,10 @@ function HashingDHParam() {
    */
   const handleChange = (e) => {
     setHashSize({ ...UNCHECKED, [e.target.name]: true })
+    dispatch(GlobalActions.LOAD_ALGORITHM, {
+      name: algorithm.id.name,
+      mode: algorithm.id.mode
+    });
   }
 
   /**

@@ -35,7 +35,7 @@ class Renderer extends React.Component {
     this.lastY = null;
     this.centerX = 0;
     this.centerY = 0;
-    this.zoom = 1;
+    this.zoom = props.initialZoom !== undefined ? props.initialZoom : 1;
     this.zoomFactor = 1.001;
     this.zoomMax = 20;
     this.zoomMin = 1 / 200;

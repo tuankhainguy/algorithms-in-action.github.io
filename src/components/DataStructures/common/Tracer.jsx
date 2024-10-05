@@ -31,6 +31,7 @@ class Tracer {
         title={this.title}
         data={this}
         size={this.size}
+        initialZoom={this.initialZoom}
       />
     );
   }
@@ -41,6 +42,16 @@ class Tracer {
   // set visualiser size multiplier
   setSize(size) {
     this.size = size;
+  }
+
+  // set the initial zoom value
+  // if you use more than one instance of the same tracer for your algorithm
+  // you need to execute GlobalActions.LOAD_ALGORITHM to apply a different
+  // value, e.g, Hashing, for the larger table to render with a smaller zoom,
+  // each time the radio buttons are pressed, GlobalActions.LOAD_ALGORITHM has
+  // to be executed
+  setInitialZoom(zoom) {
+    this.initialZoom = zoom;
   }
 
   reset() {
